@@ -12,6 +12,7 @@ interface SubcommandOptions {
   json?: boolean;
   testnet?: boolean;
   address?: string;
+  'tx-file'?: string;
 }
 
 export abstract class Subcommand extends Command {
