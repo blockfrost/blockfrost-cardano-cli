@@ -322,6 +322,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emurgo/cardano-serialization-lib-nodejs@npm:^9.1.2":
+  version: 9.1.2
+  resolution: "@emurgo/cardano-serialization-lib-nodejs@npm:9.1.2"
+  checksum: babd47a6f36d5772ade34277595a6c4e819f4028e15852db7f92209ab165e16d6c5d19fdedaa50d5bbad6a8d3f42599382a87b47f82c9a2d5c726bc19d8d484b
+  languageName: node
+  linkType: hard
+
 "@emurgo/cip14-js@npm:2.0.0":
   version: 2.0.0
   resolution: "@emurgo/cip14-js@npm:2.0.0"
@@ -600,14 +607,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
-  version: 16.11.9
-  resolution: "@types/node@npm:16.11.9"
-  checksum: baec2e6471ee58fd1e9874e6f47ab95a918a0f46b42424392e4c13e3e07f078f8b72b6b48073b0b14f710ed66c5f1b2e497df43f28151000f11f5f299382cfe2
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^14":
+"@types/node@npm:*, @types/node@npm:^14":
   version: 14.17.34
   resolution: "@types/node@npm:14.17.34"
   checksum: 803a7532b6998aca6aa1b3e6239f280e82612d4f641d38fbf08962c905ea9d1b278b2f09d396beac5120a4e68f33d7467298b197f2f00150ec1dcd546de02a89
@@ -1043,6 +1043,7 @@ __metadata:
   resolution: "blockfrost-cardano-cli@workspace:."
   dependencies:
     "@blockfrost/blockfrost-js": 3.0.0-beta.3
+    "@emurgo/cardano-serialization-lib-nodejs": ^9.1.2
     "@oclif/command": ^1
     "@oclif/config": ^1
     "@oclif/dev-cli": ^1
@@ -1050,6 +1051,7 @@ __metadata:
     "@types/node": ^14
     "@typescript-eslint/eslint-plugin": ^5.4.0
     "@typescript-eslint/parser": ^5.4.0
+    cli-ux: ^5.6.3
     eslint: ^7.32.0
     eslint-config-oclif: ^4.0.0
     eslint-config-oclif-typescript: ^1.0.2
@@ -1058,6 +1060,7 @@ __metadata:
     eslint-plugin-unicorn: ^38.0.1
     globby: ^10
     prettier: ^2.4.1
+    safe-stable-stringify: ^2.2.0
     ts-node: ^10.4.0
     tslib: ^1
     typescript: 4.4.4
@@ -1228,7 +1231,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-ux@npm:^5.2.1":
+"cli-ux@npm:^5.2.1, cli-ux@npm:^5.6.3":
   version: 5.6.3
   resolution: "cli-ux@npm:5.6.3"
   dependencies:
@@ -3279,6 +3282,13 @@ __metadata:
   dependencies:
     regexp-tree: ~0.1.1
   checksum: 5d734e2193c63ef0cb00f60c0244e0f8a30ecb31923633cd34636808d6a7c4c206d650017953ae1db8bc33967c2f06af33488dea6f038f4e38212beb7bed77b4
+  languageName: node
+  linkType: hard
+
+"safe-stable-stringify@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "safe-stable-stringify@npm:2.2.0"
+  checksum: 09facfbc43259f02422ff00ecbb3490d19a7b4f9545852c8a0045bd3d0120bc07f6e5f803f124312c237db688b7051fe85670c817ebba66f8530c5049201e0b2
   languageName: node
   linkType: hard
 
