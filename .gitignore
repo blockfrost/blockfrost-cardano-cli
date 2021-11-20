@@ -1,0 +1,17 @@
+.yarn/*
+!/.yarn/cache
+!/.yarn/plugins
+!/.yarn/releases
+!/.yarn/sdks
+# Documentation here: https://yarnpkg.com/features/zero-installs
+# Swap the comments on the following lines if you don't wish to use zero-installs
+#/.pnp.*
+*-debug.log
+*-error.log
+/.nyc_output
+/dist
+/lib
+/package-lock.json
+/tmp
+node_modules
+coverage
