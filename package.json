@@ -1,6 +1,6 @@
 {
   "name": "blockfrost-cardano-cli",
-  "description": "Replacement for cardano-cli powered by Blockfrost",
+  "description": "Drop-in(ish) replacement for cardano-cli powered by Blockfrost",
   "version": "0.0.0",
   "author": "@blockfrost",
   "bin": "./bin/run",

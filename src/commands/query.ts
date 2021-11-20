@@ -8,7 +8,7 @@ import { Tip } from './subcommands/query/tip';
 import { Utxo } from './subcommands/query/utxo';
 
 export default class Query extends Command {
-  static description = 'describe the command here';
+  static description = 'query the Cardano Blockchain';
 
   //   static examples = [
   //     `$ blockfrost-cardano-cli query
