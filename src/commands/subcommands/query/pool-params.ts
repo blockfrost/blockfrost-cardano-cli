@@ -1,7 +1,13 @@
-import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
-import { ERROR } from '../../../constants/errors';
-import { stringToBigInt } from '../../../utils/format';
+import {
+  bech32ToHex,
+  getNetworkFromRewardAccount,
+  stringToBigInt,
+  transformPoolRelays,
+  transformPoolUpdateCert,
+} from '../../../utils/format';
+import { Awaited } from '../../../utils/types';
 import { Subcommand } from '../subcommand';
+import { ERROR } from '../../../constants/errors';
 
 // cardano-cli response
 // {
@@ -63,22 +69,68 @@ import { Subcommand } from '../subcommand';
 //   "vrf_key": "91b5d9f738c1c3a53ded97f40d7cb80e3258af5f11f3038be4f0d044a28f310f"
 // }
 
+// cardano-cli query pool-params --stake-pool-id 7a7da8ff324477745ba248ead217741cc69b0eee94ba2e536c368503 --testnet-magic 1097911063
+// {
+//     "poolParams": null,
+//     "futurePoolParams": null,
+//     "retiring": null
+// }
+
 export class PoolParams extends Subcommand {
   doWork = async () => {
     if (!this.options['stake-pool-id']) {
       throw new Error(ERROR.FLAG_MISSING_STAKE_POOL_ID);
     }
-    const pool = await this.client.poolsById(this.options['stake-pool-id']);
-    const metadata = await this.client.poolMetadata(this.options['stake-pool-id']);
-    const relays = await this.client.poolsByIdRelays(this.options['stake-pool-id']);
 
-    const addr = CardanoWasm.Address.from_bech32(pool.reward_account);
-    const rewardAddr = CardanoWasm.RewardAddress.from_address(addr);
-    const keyhashBytes = rewardAddr?.payment_cred().to_keyhash()?.to_bytes();
-    if (!keyhashBytes) throw Error(`Invalid keyhash for ${pool.reward_account}`);
-    let rewardAddrKeyHash = Buffer.from(keyhashBytes).toString('hex');
+    let retirementEpoch = null;
+    let futurePoolParams = null;
+    let updateCert: Awaited<ReturnType<typeof this.client.txsPoolUpdates>>[number] | null = null;
+    // const latestEpoch = await this.client.epochsLatest();
+    // const pool = await this.client.poolsById(this.options['stake-pool-id']);
+    // const metadata = await this.client.poolMetadata(this.options['stake-pool-id']);
+    // const relays = await this.client.poolsByIdRelays(this.options['stake-pool-id']);
+    // const poolUpdates = await this.client.poolsByIdUpdates(this.options['stake-pool-id']);
 
-    console.log('hex', rewardAddrKeyHash);
+    const [latestEpoch, pool, metadata, relays, poolUpdates] = await Promise.all([
+      this.client.epochsLatest(),
+      this.client.poolsById(this.options['stake-pool-id']),
+      this.client.poolMetadata(this.options['stake-pool-id']),
+      this.client.poolsByIdRelays(this.options['stake-pool-id']),
+      this.client.poolsByIdUpdates(this.options['stake-pool-id']),
+    ]);
+
+    // futurePoolParams from update cert
+    if (poolUpdates.length > 0) {
+      const maybeUpdateCerts = await this.client.txsPoolUpdates(
+        poolUpdates[poolUpdates.length - 1].tx_hash,
+      );
+      updateCert = maybeUpdateCerts[maybeUpdateCerts.length - 1];
+      if (updateCert && updateCert.active_epoch > latestEpoch.epoch) {
+        futurePoolParams = transformPoolUpdateCert(pool, updateCert);
+      }
+    }
+
+    // retiring epoch
+    const retirementTxhash = pool.retirement[pool.retirement.length - 1];
+    const registrationTxHash = pool.registration[pool.registration.length - 1];
+    if (retirementTxhash && registrationTxHash) {
+      const [retirementTx, registrationTx] = await Promise.all([
+        this.client.txs(retirementTxhash),
+        this.client.txs(registrationTxHash),
+      ]);
+
+      if (
+        (retirementTx.block_height === registrationTx.block_height &&
+          retirementTx.index > registrationTx.index) ||
+        retirementTx.block_height > registrationTx.block_height
+      ) {
+        const retirements = await this.client.txsPoolRetires(retirementTxhash);
+        retirementEpoch = retirements[retirements.length - 1].retiring_epoch;
+      }
+    }
+
+    const rewardAddrKeyHash = bech32ToHex(pool.reward_account);
+
     return {
       poolParams: {
         publicKey: pool.hex,
@@ -88,33 +140,19 @@ export class PoolParams extends Subcommand {
           url: metadata.url,
         },
         vrf: pool.vrf_key,
-        owners: pool.owners.map(o => {
-          const addr = CardanoWasm.Address.from_bech32(o);
-          const rewardAddr = CardanoWasm.RewardAddress.from_address(addr);
-          const keyhashBytes = rewardAddr?.payment_cred().to_keyhash()?.to_bytes();
-          if (!keyhashBytes) throw Error(`Invalid keyhash for ${pool.reward_account}`);
-
-          const keyHashHex = Buffer.from(keyhashBytes).toString('hex');
-          return keyHashHex;
-        }),
+        owners: pool.owners.map(o => bech32ToHex(o)),
         pledge: stringToBigInt(pool.declared_pledge),
         rewardAccount: {
-          network: pool.reward_account.startsWith('stake_test1') ? 'Testnet' : 'Mainnet',
+          network: getNetworkFromRewardAccount(pool.reward_account),
           credential: {
             'key hash': rewardAddrKeyHash,
           },
         },
         margin: pool.margin_cost,
-        relays: relays.map(r => ({
-          'single host address': {
-            IPv6: r.ipv6,
-            port: r.port,
-            IPv4: r.ipv4,
-          },
-        })),
+        relays: transformPoolRelays(relays),
       },
-      futurePoolParams: null, // ?
-      retiring: null, // ?
+      futurePoolParams,
+      retiring: retirementEpoch,
     };
   };
 }
