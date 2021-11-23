@@ -1,3 +1,5 @@
+import { Responses } from '@blockfrost/blockfrost-js';
+import { bech32 } from 'bech32';
 import sStringify from 'safe-stable-stringify';
 
 export const stringToBigInt = (value: string | null) => (value ? BigInt(value) : value);
@@ -11,3 +13,56 @@ export const stripQuotes = (str: string) => {
 
   return str;
 };
+
+export const bech32ToHex = (bech32Addr: string) => {
+  const decodedWords = bech32.decode(bech32Addr, 1000);
+  const payload = bech32.fromWords(decodedWords.words);
+  const keyHashHex = Buffer.from(payload).toString('hex').slice(2); // first 4 bits is prefix
+  return keyHashHex;
+};
+
+export const transformPoolRelays = (relays: Responses['pool_relays']) =>
+  relays.map(r =>
+    r.dns
+      ? {
+          'single host name': {
+            port: r.port,
+            dnsName: r.dns,
+          },
+        }
+      : {
+          'single host address': {
+            IPv6: r.ipv6,
+            port: r.port,
+            IPv4: r.ipv4,
+          },
+        },
+  );
+
+export const transformPoolUpdateCert = (
+  pool: Responses['pool'],
+  cert: Responses['tx_content_pool_certs'][number],
+) => {
+  return {
+    publicKey: pool.hex,
+    cost: cert.fixed_cost,
+    metadata: {
+      hash: cert.metadata?.hash,
+      url: cert.metadata?.url,
+    },
+    vrf: cert.vrf_key,
+    owners: cert.owners.map(o => bech32ToHex(o)),
+    pledge: stringToBigInt(cert.pledge),
+    rewardAccount: {
+      network: getNetworkFromRewardAccount(cert.reward_account),
+      credential: {
+        'key hash': bech32ToHex(cert.reward_account),
+      },
+    },
+    margin: cert.margin_cost,
+    relays: transformPoolRelays(cert.relays),
+  };
+};
+
+export const getNetworkFromRewardAccount = (rewardAccount: string) =>
+  rewardAccount.startsWith('stake_test1') ? 'Testnet' : 'Mainnet';
