@@ -7,16 +7,14 @@
   "bugs": "https://github.com/blockfrost/blockfrost-cardano-cli/issues",
   "dependencies": {
     "@blockfrost/blockfrost-js": "3.0.0-beta.4",
-    "@oclif/command": "^1",
-    "@oclif/config": "^1",
-    "@oclif/plugin-help": "^3",
+    "@oclif/core": "1.0.4",
+    "@oclif/plugin-help": "^5",
     "bech32": "^2.0.0",
-    "cli-ux": "^5.6.3",
+    "cli-ux": "^5.6.4",
     "safe-stable-stringify": "^2.2.0",
     "tslib": "^1"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1",
     "@types/node": "^14",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
@@ -27,6 +25,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-unicorn": "^38.0.1",
     "globby": "^10",
+    "oclif": "2.0.0-main.10",
     "prettier": "^2.4.1",
     "ts-node": "^10.4.0",
     "typescript": "4.4.4"
@@ -48,20 +47,30 @@
   "main": "lib/index.js",
   "oclif": {
     "commands": "./lib/commands",
-    "bin": "blockfrost-cardano-cli",
+    "bin": "bcc",
     "plugins": [
       "@oclif/plugin-help"
-    ]
+    ],
+    "topicSeparator": " ",
+    "topics": {
+      "query": {
+        "description": "Node query commands"
+      },
+      "transaction": {
+        "description": "Transaction commands"
+      }
+    }
   },
   "repository": "blockfrost/blockfrost-cardano-cli",
   "scripts": {
+    "build": "rm -rf lib && tsc -b",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint . --ext .ts --config .eslintrc",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "prepack": "yarn build && oclif manifest && oclif readme",
     "test": "echo NO TESTS",
     "lint": "eslint . --ext .ts",
     "type-check": "tsc -p tsconfig.types.json",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif readme && git add README.md"
   },
   "types": "lib/index.d.ts",
   "packageManager": "yarn@3.1.0"
