@@ -21,7 +21,9 @@ import { BaseCommand } from '../../helpers/BaseCommand';
 
 export class Tip extends BaseCommand {
   doWork = async () => {
-    const latestBlock = await this.client.blocksLatest();
+    const client = await this.getClient();
+
+    const latestBlock = await client.blocksLatest();
     const response = {
       epoch: latestBlock.epoch,
       hash: latestBlock.hash,

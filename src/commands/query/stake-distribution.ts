@@ -1,5 +1,4 @@
 import { cli } from 'cli-ux';
-import { stringify } from '../../utils/format';
 import { BaseCommand } from '../../helpers/BaseCommand';
 
 // cardano-cli response
@@ -67,8 +66,10 @@ export class StakeDistribution extends BaseCommand {
   };
 
   doWork = async () => {
+    const client = await this.getClient();
+
     // TODO: refactor once we have proper endpoint for stake distribution
-    const pools = await this.client.poolsAll();
+    const pools = await client.poolsAll();
     const allStakes: {
       pool_id: string;
       live_stake: string;
@@ -79,7 +80,7 @@ export class StakeDistribution extends BaseCommand {
 
     const getPromiseBundle = (startIndex: number, batchSize: number) => {
       const promises = [...Array(batchSize).keys()].map(i =>
-        this.client.poolsById(pools[startIndex + i]),
+        client.poolsById(pools[startIndex + i]),
       );
       return promises;
     };
