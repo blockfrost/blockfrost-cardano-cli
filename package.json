@@ -41,7 +41,10 @@
   ],
   "homepage": "https://github.com/blockfrost/blockfrost-cardano-cli",
   "keywords": [
-    "oclif"
+    "blockfrost",
+    "cardano",
+    "cardano-cli",
+    "blockchain"
   ],
   "license": "Apache-2.0",
   "main": "lib/index.js",
