@@ -15,13 +15,14 @@ import { BaseCommand } from '../../helpers/BaseCommand';
 export class StakeAddressInfo extends BaseCommand {
   static flags = {
     ...BaseCommand.flags,
-    address: Flags.string({ char: 'a', description: 'address', required: true }),
+    address: Flags.string({ description: 'address', required: true }),
   };
 
   doWork = async () => {
     const { flags } = await this.parse(StakeAddressInfo);
+    const client = await this.getClient();
 
-    const account = await this.client.accounts(flags.address);
+    const account = await client.accounts(flags.address);
     const response = [
       {
         address: account.stake_address,

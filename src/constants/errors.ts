@@ -3,4 +3,5 @@ export const ERROR = {
   FILE_CANNOT_READ: 'Cannot read a file',
   TX_FILE_UNKNOWN_FORMAT: 'Unknown transaction file format.',
   FILE_WRITE_FAIL: `Failed to write to a file`,
+  ENV_PROJECT_ID_NOT_SET: `Environment variable BLOCKFROST_PROJECT_ID not set`,
 } as const;

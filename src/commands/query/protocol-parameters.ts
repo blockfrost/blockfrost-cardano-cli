@@ -213,8 +213,10 @@ import { stringToBigInt } from '../../utils/format';
 
 export class ProtocolParameters extends BaseCommand {
   doWork = async () => {
-    const latestEpoch = await this.client.epochsLatest();
-    const epochParams = await this.client.epochsParameters(latestEpoch.epoch);
+    const client = await this.getClient();
+
+    const latestEpoch = await client.epochsLatest();
+    const epochParams = await client.epochsParameters(latestEpoch.epoch);
 
     const response = {
       txFeePerByte: epochParams.min_fee_a,

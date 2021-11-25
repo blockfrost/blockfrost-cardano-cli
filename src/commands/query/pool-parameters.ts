@@ -85,27 +85,23 @@ export class PoolParams extends BaseCommand {
 
   doWork = async () => {
     const { flags } = await this.parse(PoolParams);
+    const client = await this.getClient();
 
     let retirementEpoch = null;
     let futurePoolParams = null;
-    let updateCert: Awaited<ReturnType<typeof this.client.txsPoolUpdates>>[number] | null = null;
-    // const latestEpoch = await this.client.epochsLatest();
-    // const pool = await this.client.poolsById(this.options['stake-pool-id']);
-    // const metadata = await this.client.poolMetadata(this.options['stake-pool-id']);
-    // const relays = await this.client.poolsByIdRelays(this.options['stake-pool-id']);
-    // const poolUpdates = await this.client.poolsByIdUpdates(this.options['stake-pool-id']);
+    let updateCert: Awaited<ReturnType<typeof client.txsPoolUpdates>>[number] | null = null;
 
     const [latestEpoch, pool, metadata, relays, poolUpdates] = await Promise.all([
-      this.client.epochsLatest(),
-      this.client.poolsById(flags['stake-pool-id']),
-      this.client.poolMetadata(flags['stake-pool-id']),
-      this.client.poolsByIdRelays(flags['stake-pool-id']),
-      this.client.poolsByIdUpdates(flags['stake-pool-id']),
+      client.epochsLatest(),
+      client.poolsById(flags['stake-pool-id']),
+      client.poolMetadata(flags['stake-pool-id']),
+      client.poolsByIdRelays(flags['stake-pool-id']),
+      client.poolsByIdUpdates(flags['stake-pool-id']),
     ]);
 
     // futurePoolParams from update cert
     if (poolUpdates.length > 0) {
-      const maybeUpdateCerts = await this.client.txsPoolUpdates(
+      const maybeUpdateCerts = await client.txsPoolUpdates(
         poolUpdates[poolUpdates.length - 1].tx_hash,
       );
       updateCert = maybeUpdateCerts[maybeUpdateCerts.length - 1];
@@ -119,8 +115,8 @@ export class PoolParams extends BaseCommand {
     const registrationTxHash = pool.registration[pool.registration.length - 1];
     if (retirementTxhash && registrationTxHash) {
       const [retirementTx, registrationTx] = await Promise.all([
-        this.client.txs(retirementTxhash),
-        this.client.txs(registrationTxHash),
+        client.txs(retirementTxhash),
+        client.txs(registrationTxHash),
       ]);
 
       if (
@@ -128,7 +124,7 @@ export class PoolParams extends BaseCommand {
           retirementTx.index > registrationTx.index) ||
         retirementTx.block_height > registrationTx.block_height
       ) {
-        const retirements = await this.client.txsPoolRetires(retirementTxhash);
+        const retirements = await client.txsPoolRetires(retirementTxhash);
         retirementEpoch = retirements[retirements.length - 1].retiring_epoch;
       }
     }

@@ -44,10 +44,11 @@ export class Submit extends BaseCommand {
 
   doWork = async () => {
     const { flags } = await this.parse(Submit);
+    const client = await this.getClient();
 
     const transaction = this.readFromFile(flags['tx-file']);
     try {
-      const response = await this.client.txSubmit(transaction);
+      const response = await client.txSubmit(transaction);
       return response;
     } catch (err) {
       if (err instanceof BlockfrostServerError || err instanceof BlockfrostClientError) {

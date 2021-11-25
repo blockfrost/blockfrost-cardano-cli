@@ -58,7 +58,7 @@ type Data = { address: string; utxo: Responses['address_utxo_content'] };
 export class Utxo extends BaseCommand {
   static flags = {
     ...BaseCommand.flags,
-    address: Flags.string({ char: 'a', description: 'address', required: true }),
+    address: Flags.string({ description: 'address', required: true }),
   };
 
   prettyPrint = (res: Data) => {
@@ -105,9 +105,10 @@ export class Utxo extends BaseCommand {
 
   doWork = async (): Promise<Data> => {
     const { flags } = await this.parse(Utxo);
-    const address = flags.address;
-    const utxo = await this.client.addressesUtxosAll(address, { order: 'desc' });
+    const client = await this.getClient();
 
+    const address = flags.address;
+    const utxo = await client.addressesUtxosAll(address, { order: 'desc' });
     return {
       utxo,
       address,

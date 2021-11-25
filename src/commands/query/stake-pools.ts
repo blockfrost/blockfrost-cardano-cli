@@ -31,7 +31,9 @@ export class StakePools extends BaseCommand {
   };
 
   doWork = async () => {
-    const response = await this.client.poolsAll();
+    const client = await this.getClient();
+
+    const response = await client.poolsAll();
     return response;
   };
 }
