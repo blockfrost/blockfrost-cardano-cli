@@ -6,7 +6,7 @@
   "bin": "./bin/run",
   "bugs": "https://github.com/blockfrost/blockfrost-cardano-cli/issues",
   "dependencies": {
-    "@blockfrost/blockfrost-js": "3.0.0-beta.4",
+    "@blockfrost/blockfrost-js": "3.0.0-beta.10",
     "@oclif/core": "1.0.4",
     "@oclif/plugin-help": "^5",
     "bech32": "^2.0.0",

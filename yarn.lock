@@ -277,25 +277,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@blockfrost/blockfrost-js@npm:3.0.0-beta.4":
-  version: 3.0.0-beta.4
-  resolution: "@blockfrost/blockfrost-js@npm:3.0.0-beta.4"
+"@blockfrost/blockfrost-js@npm:3.0.0-beta.10":
+  version: 3.0.0-beta.10
+  resolution: "@blockfrost/blockfrost-js@npm:3.0.0-beta.10"
   dependencies:
-    "@blockfrost/openapi": 0.1.32
+    "@blockfrost/openapi": 0.1.33
     "@emurgo/cardano-serialization-lib-nodejs": ^8.1.0
     "@emurgo/cip14-js": 2.0.0
     form-data: ^4.0.0
-    got: ^11.8.2
+    got: ^11.8.3
     nock: ^13.2.1
     url-join: ^4.0.1
-  checksum: 9b8507b338a5de7acf5a732ebcb13016e426ed008252dd8a4406967516c349d9ab6c12c8cf5e4958ebaf7c01d5144505bc3fdbee3b964ba8a02a8af79a33aba4
+  checksum: 1242dc1dfac0449c957f4d8ce138d863497f30f0ab2882f3a05287e92d6c9f1275e11ce6f400460a6cb24679dc11ddd5aaf539f2683526df2420e1a27aed226e
   languageName: node
   linkType: hard
 
-"@blockfrost/openapi@npm:0.1.32":
-  version: 0.1.32
-  resolution: "@blockfrost/openapi@npm:0.1.32"
-  checksum: 691b4d37ce2d09f1f9f38cdda0e5d6ba0e2d08f031cc1a4de2df1a979339959d2a17136ba501dd7a932cf0dba999066f0985a72676be38e135d37a40f6a1830a
+"@blockfrost/openapi@npm:0.1.33":
+  version: 0.1.33
+  resolution: "@blockfrost/openapi@npm:0.1.33"
+  checksum: ca705c49fb2dc36aea946a11778ae1aaac9e6ba8cd14a16212dd647912a84b3dfddc451dbc0d6c6480f2e59fef2540bac1ee32fa8ea0d6a7c0c08ec82125feab
   languageName: node
   linkType: hard
 
@@ -1378,14 +1378,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "blockfrost-cardano-cli@workspace:."
   dependencies:
-    "@blockfrost/blockfrost-js": 3.0.0-beta.4
+    "@blockfrost/blockfrost-js": 3.0.0-beta.10
     "@oclif/core": 1.0.4
     "@oclif/plugin-help": ^5
     "@types/node": ^14
     "@typescript-eslint/eslint-plugin": ^5.4.0
     "@typescript-eslint/parser": ^5.4.0
     bech32: ^2.0.0
-    cli-ux: ^5.6.3
+    cli-ux: ^5.6.4
     eslint: ^7.32.0
     eslint-config-oclif: ^4.0.0
     eslint-config-oclif-typescript: ^1.0.2
@@ -1724,7 +1724,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-ux@npm:^5.1.0":
+"cli-ux@npm:^5.1.0, cli-ux@npm:^5.6.4":
   version: 5.6.4
   resolution: "cli-ux@npm:5.6.4"
   dependencies:
@@ -3476,7 +3476,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"got@npm:^11.8.2":
+"got@npm:^11.8.3":
   version: 11.8.3
   resolution: "got@npm:11.8.3"
   dependencies:
