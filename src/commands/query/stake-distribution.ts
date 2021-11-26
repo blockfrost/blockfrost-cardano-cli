@@ -1,3 +1,5 @@
+import { Responses } from '@blockfrost/blockfrost-js';
+import Big from 'big.js';
 import { cli } from 'cli-ux';
 import { BaseCommand } from '../../helpers/BaseCommand';
 
@@ -40,30 +42,55 @@ import { BaseCommand } from '../../helpers/BaseCommand';
 //       "denominator": 20150911152895487
 //   },
 //   ...
+
+type Data = {
+  pool_id: string;
+  numerator: BigInt;
+  denominator: BigInt;
+};
 export class StakeDistribution extends BaseCommand {
-  // TODO: toFile method
-  prettyPrint = (
-    res: {
-      pool_id: string;
-      live_stake: string;
-    }[],
-  ) => {
+  prettyPrint = (res: Data[]) => {
+    const calculatedData = res.map(stake => ({
+      pool_id: stake.pool_id,
+      frac: Big(stake.numerator.toString()).div(Big(stake.denominator.toString())).toExponential(3),
+    }));
     this.log();
-    cli.table(
-      res,
-      {
-        pool_id: {
-          header: 'PoolId',
-          minWidth: 30,
+    try {
+      cli.table(
+        calculatedData,
+        {
+          pool_id: {
+            header: 'PoolId',
+            minWidth: 30,
+          },
+          frac: {
+            header: 'Stake frac',
+          },
         },
-        live_stake: {
-          header: 'Stake frac',
-        },
-      },
-      { printLine: this.log },
-    );
+        { printLine: console.log, 'no-truncate': true },
+      );
+    } catch (err) {
+      console.error(err);
+    }
     this.log();
   };
+
+  async toFile(data: Data[]): Promise<void> {
+    const stakePerPool: Record<
+      string,
+      {
+        numerator: BigInt;
+        denominator: BigInt;
+      }
+    > = {};
+    data.map(stake => {
+      stakePerPool[stake.pool_id] = {
+        numerator: stake.numerator,
+        denominator: stake.denominator,
+      };
+    });
+    super.toFile(stakePerPool);
+  }
 
   doWork = async () => {
     const client = await this.getClient();
@@ -72,40 +99,59 @@ export class StakeDistribution extends BaseCommand {
     const pools = await client.poolsAll();
     const allStakes: {
       pool_id: string;
-      live_stake: string;
+      live_stake: BigInt;
     }[] = [];
     const SMALL_BATCH = 10;
     const LARGE_BATCH = 100;
     let batch_size = LARGE_BATCH;
+    let stakesSum = BigInt(0);
 
     const getPromiseBundle = (startIndex: number, batchSize: number) => {
-      const promises = [...Array(batchSize).keys()].map(i =>
-        client.poolsById(pools[startIndex + i]),
-      );
-      return promises;
+      const promises = [...Array(batchSize).keys()].map(i => {
+        const poolId = pools[startIndex + i];
+        return poolId ? client.poolsById(poolId) : undefined;
+      });
+      return promises.filter(p => !!p) as unknown as Responses['pool'][];
     };
 
+    // cli.action.start('Fetching pools');
+    const progressBar = cli.progress({
+      format: '{value}/{total} pools {bar}',
+      barCompleteChar: '\u2588',
+      barIncompleteChar: '\u2591',
+    });
+    progressBar.start(pools.length, 0);
     // Blockfrost API allows burst of 500 request, then we can only make 10 requests per second
     for (let i = 0; i < pools.length; i += batch_size) {
-      this.log(`Fetching pools ${i + batch_size}/${pools.length}`);
+      // this.log(`Fetching pools ${i + batch_size}/${pools.length}`);
       const promiseSlice = getPromiseBundle(i, batch_size);
       if (batch_size === SMALL_BATCH) {
         // wait 1 second before each small batch
-        await new Promise((resolve, reject) => setTimeout(() => resolve(true), 1000));
+        await new Promise(resolve => setTimeout(() => resolve(true), 1000));
       }
       const partialResults = await Promise.all(promiseSlice);
+      progressBar.update(i);
       partialResults.forEach(res => {
+        const liveStake = BigInt(res.live_stake);
         allStakes.push({
           pool_id: res.pool_id,
-          live_stake: res.live_stake,
+          live_stake: liveStake,
         });
+        stakesSum += liveStake;
       });
       if (i >= 400) {
         // after 400 request switch to small batch
         batch_size = SMALL_BATCH;
       }
     }
+    // cli.action.stop();
+    progressBar.stop();
 
-    return allStakes;
+    const formattedStakes = allStakes.map(stake => ({
+      pool_id: stake.pool_id,
+      numerator: stake.live_stake,
+      denominator: stakesSum,
+    }));
+    return formattedStakes;
   };
 }

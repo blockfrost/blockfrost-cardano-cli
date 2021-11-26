@@ -1163,6 +1163,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/big.js@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "@types/big.js@npm:6.1.2"
+  checksum: fb0daa4b23e1cb9d0d1c847722ae3764978d0290875d91687c6ecc7566860129ce86b190b732294484077d45f9b82ef3e97784ee32c83aef05e8c8433c4fde6a
+  languageName: node
+  linkType: hard
+
 "@types/cacheable-request@npm:^6.0.1":
   version: 6.0.2
   resolution: "@types/cacheable-request@npm:6.0.2"
@@ -2054,6 +2061,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"big.js@npm:^6.1.1":
+  version: 6.1.1
+  resolution: "big.js@npm:6.1.1"
+  checksum: ba5db278e7d6700d7f92b7421e851bb65b6336d90b882869696c50574623c6be31f81500c3195fb1b391045163ffe62745e1c2bc30b35cb15e1b3e3ed135266b
+  languageName: node
+  linkType: hard
+
 "binaryextensions@npm:^2.1.2":
   version: 2.3.0
   resolution: "binaryextensions@npm:2.3.0"
@@ -2098,11 +2112,13 @@ __metadata:
     "@blockfrost/blockfrost-js": 3.0.0-beta.10
     "@oclif/core": 1.0.4
     "@oclif/plugin-help": ^5
+    "@types/big.js": ^6.1.2
     "@types/jest": ^27.0.3
     "@types/node": ^14
     "@typescript-eslint/eslint-plugin": ^5.4.0
     "@typescript-eslint/parser": ^5.4.0
     bech32: ^2.0.0
+    big.js: ^6.1.1
     cli-ux: ^5.6.4
     eslint: ^7.32.0
     eslint-config-oclif: ^4.0.0
