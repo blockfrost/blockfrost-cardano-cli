@@ -4,7 +4,11 @@ import sStringify from 'safe-stable-stringify';
 
 export const stringToBigInt = (value: string | null) => (value ? BigInt(value) : value);
 
-export const stringify = (obj: any) => sStringify(obj, undefined, 4); // safe-stable-stringify properly stringifies BigInt
+export const stringify = (obj: any) => {
+  // safe-stable-stringify properly stringifies BigInt
+  const s = sStringify.configure({ deterministic: false }); // rely on the insertion order
+  return s(obj, undefined, 4);
+};
 
 export const stripQuotes = (str: string) => {
   if (typeof str === 'string' && str[0] === '"' && str[str.length - 1] === '"') {
