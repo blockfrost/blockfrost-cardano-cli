@@ -1,0 +1,1 @@
+export const TESTNET_MAGIC = 1097911063;
