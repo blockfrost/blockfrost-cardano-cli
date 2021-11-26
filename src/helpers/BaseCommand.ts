@@ -1,11 +1,12 @@
+import * as util from 'util';
 import { Command, Config, Flags } from '@oclif/core';
+import { BlockFrostAPI, BlockfrostServerError } from '@blockfrost/blockfrost-js';
 import { ERROR } from '../constants/errors';
 import { createBlockfrostClient } from '../services/blockfrost';
 import { writeToFile } from '../utils/file';
 import { stringify } from '../utils/format';
 import { CommandDataType } from '../utils/types';
-import { BlockFrostAPI, BlockfrostServerError } from '@blockfrost/blockfrost-js';
-import { TESTNET_MAGIC } from '../constants';
+import { ENV_VAR_PROJECT_ID, TESTNET_MAGIC } from '../constants';
 
 export abstract class BaseCommand extends Command {
   private client: BlockFrostAPI | null;
@@ -74,9 +75,13 @@ export abstract class BaseCommand extends Command {
   async catch(err: Record<string, any>) {
     if (err instanceof BlockfrostServerError) {
       if (err.message.includes('Network token mismatch')) {
-        // TODO: probably 2 env vars, one for mainnet, other one for testnet
+        const { flags } = await this.parseBaseCommand();
+        const envVarName = flags.testnet ? ENV_VAR_PROJECT_ID.TESTNET : ENV_VAR_PROJECT_ID.MAINNET;
         this.error(
-          'Network token mismatch.\nUse --tesnet or check if environment variable BLOCKFROST_PROJECT_ID is set correctly.',
+          util.format(
+            'Network token mismatch.\nUse --tesnet for testnet network or check if environment variable %s is set correctly.',
+            envVarName,
+          ),
         );
       }
     }
