@@ -10,10 +10,10 @@ import { ENV_VAR_PROJECT_ID, TESTNET_MAGIC } from '../constants';
 
 export abstract class BaseCommand extends Command {
   private client: BlockFrostAPI | null;
-  // method that returns data to be printed. Called from run().
+  // Method that returns data to be printed to stdout. Will be called from 'run' method.
   abstract doWork(): Promise<any>;
-  // each commands extends this class and can define additional flags
-  // without scrict mode disabled calling parseBaseCommand from this class would fail because of unknown flags/arguments
+  // Each command extends this class and can define additional flags
+  // without strict mode disabled calling 'parseBaseCommand' from within this class would fail because of unknown flags/arguments
   static strict = false;
 
   static flags = {
