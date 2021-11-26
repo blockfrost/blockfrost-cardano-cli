@@ -14,10 +14,12 @@ export const stripQuotes = (str: string) => {
   return str;
 };
 
-export const bech32ToHex = (bech32Addr: string) => {
+export const bech32ToHex = (bech32Addr: string, stripPrefix = false) => {
   const decodedWords = bech32.decode(bech32Addr, 1000);
   const payload = bech32.fromWords(decodedWords.words);
-  const keyHashHex = Buffer.from(payload).toString('hex').slice(2); // first 4 bits is prefix
+  const keyHashHex = Buffer.from(payload)
+    .toString('hex')
+    .slice(stripPrefix ? 2 : 0); // first byte is prefix
   return keyHashHex;
 };
 
@@ -40,23 +42,23 @@ export const transformPoolRelays = (relays: Responses['pool_relays']) =>
   );
 
 export const transformPoolUpdateCert = (
-  pool: Responses['pool'],
+  poolHex: string,
   cert: Responses['tx_content_pool_certs'][number],
 ) => {
   return {
-    publicKey: pool.hex,
+    publicKey: poolHex,
     cost: cert.fixed_cost,
     metadata: {
       hash: cert.metadata?.hash,
       url: cert.metadata?.url,
     },
     vrf: cert.vrf_key,
-    owners: cert.owners.map(o => bech32ToHex(o)),
+    owners: cert.owners.map(o => bech32ToHex(o, true)),
     pledge: stringToBigInt(cert.pledge),
     rewardAccount: {
       network: getNetworkFromRewardAccount(cert.reward_account),
       credential: {
-        'key hash': bech32ToHex(cert.reward_account),
+        'key hash': bech32ToHex(cert.reward_account, true),
       },
     },
     margin: cert.margin_cost,
