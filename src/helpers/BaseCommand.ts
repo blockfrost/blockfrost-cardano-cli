@@ -5,6 +5,7 @@ import { writeToFile } from '../utils/file';
 import { stringify } from '../utils/format';
 import { CommandDataType } from '../utils/types';
 import { BlockFrostAPI, BlockfrostServerError } from '@blockfrost/blockfrost-js';
+import { TESTNET_MAGIC } from '../constants';
 
 export abstract class BaseCommand extends Command {
   private client: BlockFrostAPI | null;
@@ -18,6 +19,10 @@ export abstract class BaseCommand extends Command {
     // common flags
     help: Flags.help({ char: 'h' }),
     testnet: Flags.boolean({ char: 't', description: 'Cardano Testnet' }),
+    'testnet-magic': Flags.integer({
+      hidden: true,
+      exclusive: ['testnet'],
+    }), // --testnet magic 1097911063 should be a same as using --testnet
     json: Flags.boolean({ description: 'Always outputs json instead of pretty printed table' }),
     'out-file': Flags.string({
       description: 'Optional output file. Default is to write to stdout.',
@@ -37,6 +42,17 @@ export abstract class BaseCommand extends Command {
   async getClient() {
     if (!this.client) {
       const { flags } = await this.parseBaseCommand();
+
+      // set flags.testnet based on testnet-magic flag if necessary
+      const testnetMagic = flags['testnet-magic'];
+      if (testnetMagic) {
+        if (testnetMagic === TESTNET_MAGIC) {
+          flags.testnet = true;
+        } else {
+          throw Error(`Unsupported testnet magic.`);
+        }
+      }
+
       this.client = createBlockfrostClient(flags.testnet);
     }
     return this.client;
