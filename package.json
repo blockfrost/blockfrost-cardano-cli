@@ -15,6 +15,7 @@
     "tslib": "^1"
   },
   "devDependencies": {
+    "@types/jest": "^27.0.3",
     "@types/node": "^14",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
@@ -25,8 +26,10 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-unicorn": "^38.0.1",
     "globby": "^10",
+    "jest": "^27.3.1",
     "oclif": "2.0.0-main.10",
     "prettier": "^2.4.1",
+    "ts-jest": "^27.0.7",
     "ts-node": "^10.4.0",
     "typescript": "4.4.4"
   },
@@ -70,7 +73,7 @@
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "yarn build && oclif manifest && oclif readme",
-    "test": "echo NO TESTS",
+    "test": "jest",
     "lint": "eslint . --ext .ts",
     "type-check": "tsc -p tsconfig.types.json",
     "version": "oclif readme && git add README.md"

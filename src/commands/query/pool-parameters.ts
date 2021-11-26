@@ -106,7 +106,7 @@ export class PoolParams extends BaseCommand {
       );
       updateCert = maybeUpdateCerts[maybeUpdateCerts.length - 1];
       if (updateCert && updateCert.active_epoch > latestEpoch.epoch) {
-        futurePoolParams = transformPoolUpdateCert(pool, updateCert);
+        futurePoolParams = transformPoolUpdateCert(pool.hex, updateCert);
       }
     }
 
@@ -129,7 +129,7 @@ export class PoolParams extends BaseCommand {
       }
     }
 
-    const rewardAddrKeyHash = bech32ToHex(pool.reward_account);
+    const rewardAddrKeyHash = bech32ToHex(pool.reward_account, true);
 
     return {
       poolParams: {
@@ -140,7 +140,7 @@ export class PoolParams extends BaseCommand {
           url: metadata.url,
         },
         vrf: pool.vrf_key,
-        owners: pool.owners.map(o => bech32ToHex(o)),
+        owners: pool.owners.map(o => bech32ToHex(o, true)),
         pledge: stringToBigInt(pool.declared_pledge),
         rewardAccount: {
           network: getNetworkFromRewardAccount(pool.reward_account),
