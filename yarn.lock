@@ -2131,6 +2131,7 @@ __metadata:
     oclif: 2.0.0-main.10
     prettier: ^2.4.1
     safe-stable-stringify: ^2.2.0
+    stdout-stderr: ^0.1.13
     ts-jest: ^27.0.7
     ts-node: ^10.4.0
     tslib: ^1
@@ -8614,6 +8615,16 @@ __metadata:
     define-property: ^0.2.5
     object-copy: ^0.1.0
   checksum: 8657485b831f79e388a437260baf22784540417a9b29e11572c87735df24c22b84eda42107403a64b30861b2faf13df9f7fc5525d51f9d1d2303aba5cbf4e12c
+  languageName: node
+  linkType: hard
+
+"stdout-stderr@npm:^0.1.13":
+  version: 0.1.13
+  resolution: "stdout-stderr@npm:0.1.13"
+  dependencies:
+    debug: ^4.1.1
+    strip-ansi: ^6.0.0
+  checksum: 3955a0afa9a483188929796fd9fa9417f845c3bfcd92f132b3ae7d2a862f91a846312e4244f07eb4dd4c5bd2fe95035db5db01679e7d3795d3ea0b772fc7a6f7
   languageName: node
   linkType: hard
 
