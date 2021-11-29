@@ -36,24 +36,33 @@ export abstract class BaseCommand extends Command {
     this.client = null;
   }
 
+  private async handleTestnetMagic() {
+    const { flags } = await this.parse(BaseCommand);
+    // set flags.testnet based on testnet-magic flag if necessary
+    const testnetMagic = flags['testnet-magic'];
+    if (testnetMagic) {
+      if (testnetMagic === TESTNET_MAGIC) {
+        if (!flags.testnet) {
+          // insert testnet flag and remove --testnet-magic TESTNET_MAGIC
+          this.argv.push('--testnet');
+          const magicIndex = this.argv.findIndex(a => a === '--testnet-magic');
+          this.argv.splice(magicIndex, 2);
+          // flags.testnet = true; // probably useless
+        }
+      } else {
+        throw Error(ERROR.FLAG_UNSUPPORTED_TESTNET_MAGIC);
+      }
+    }
+  }
+
   private async parseBaseCommand() {
+    await this.handleTestnetMagic();
     return this.parse(BaseCommand);
   }
 
   async getClient() {
     if (!this.client) {
       const { flags } = await this.parseBaseCommand();
-
-      // set flags.testnet based on testnet-magic flag if necessary
-      const testnetMagic = flags['testnet-magic'];
-      if (testnetMagic) {
-        if (testnetMagic === TESTNET_MAGIC) {
-          flags.testnet = true;
-        } else {
-          throw Error(`Unsupported testnet magic.`);
-        }
-      }
-
       this.client = createBlockfrostClient(flags.testnet);
     }
     return this.client;
@@ -89,7 +98,7 @@ export abstract class BaseCommand extends Command {
     return super.catch(err);
   }
 
-  run = async (): Promise<void> => {
+  run = async (): Promise<BaseCommand> => {
     const { flags } = await this.parseBaseCommand();
     const result = await this.doWork();
 
@@ -100,7 +109,8 @@ export abstract class BaseCommand extends Command {
     }
 
     if (flags['out-file']) {
-      this.toFile(result);
+      await this.toFile(result);
     }
+    return this;
   };
 }
