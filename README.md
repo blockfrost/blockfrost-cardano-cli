@@ -8,9 +8,25 @@ Drop-in(ish) replacement for cardano-cli. Query the blockchain without the need 
 
 If you have Node.js installed the fastest way to install the CLI is directly with npm. For instructions for installing Node.js please see [nodejs.org](https://nodejs.org/en/download/). Although the CLI should run on Node.js v14 just fine, we recommend v16 which is active LTS.
 
-`npm install -g @blockfrost/cardano-cli`
+```console
+npm install -g @blockfrost/cardano-cli
+```
 
 After the installation is completed new commands `blockfrost-cardano-cli` and its shorter alias `bcc` should be available.
+
+### Docker
+
+Build the docker container by running following command within the repository:
+
+```console
+docker build . -t blockfrost-cardano-cli
+```
+
+Then can use `docker run` with `--env` flag to pass environment variables into a docker container:
+
+```console
+docker run --env BLOCKFROST_PROJECT_ID_MAINNET=<PROJECT_ID> blockfrost-cardano-cli --help
+```
 
 ## Setup
 
@@ -25,7 +41,9 @@ We recommend setting both of these variables as it allows you to seamlessly swit
 
 ## Usage
 
-`$ bcc <COMMAND> [--testnet | --testnet-magic 1097911063] [--out-file FILE] [--help]`
+```console
+$ bcc <COMMAND> [--testnet | --testnet-magic 1097911063] [--out-file FILE] [--help]
+```
 
 ### Commands
 
@@ -33,7 +51,7 @@ We recommend setting both of these variables as it allows you to seamlessly swit
 
 List parameters of specified pool
 
-```
+```console
 $ bcc query pool-params --stake-pool-id pool1y6chk7x7fup4ms9leesdr57r4qy9cwxuee0msan72x976a6u0nc --testnet
 
 {
@@ -72,7 +90,7 @@ $ bcc query pool-params --stake-pool-id pool1y6chk7x7fup4ms9leesdr57r4qy9cwxuee0
 
 #### `bcc query protocol-parameters`
 
-```
+```console
 $ bcc query protocol-parameters --testnet
 
 {
@@ -120,7 +138,7 @@ $ bcc query protocol-parameters --testnet
 
 Get the current tip
 
-```
+```console
 $ bcc query tip --testnet
 
 {
@@ -137,7 +155,7 @@ $ bcc query tip --testnet
 
 List of pools sorted by pool ID (in hex).
 
-```
+```console
 $ bcc query stake-distribution --testnet
 
  PoolId                                                   Stake frac
@@ -156,7 +174,7 @@ $ bcc query stake-distribution --testnet
 
 Get the current delegations and reward balance filtered by stake address.
 
-```
+```console
 $ bcc query stake-address-info --address stake_test1uqvjsz7a3xm7ylpzgdhvg29gd9686ss9kztxeaanwp9nreqq74692 --testnet
 
 [
@@ -170,7 +188,7 @@ $ bcc query stake-address-info --address stake_test1uqvjsz7a3xm7ylpzgdhvg29gd968
 
 #### `bcc transaction submit --tx-file FILE`
 
-```
+```console
 $ bcc transaction submit --tx-file /tmp/mytx --testnet
 
 Transaction successfully submitted.
