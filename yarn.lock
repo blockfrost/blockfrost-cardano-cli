@@ -449,6 +449,43 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@blockfrost/cardano-cli@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@blockfrost/cardano-cli@workspace:."
+  dependencies:
+    "@blockfrost/blockfrost-js": 3.0.0-beta.10
+    "@oclif/core": 1.0.4
+    "@oclif/plugin-help": ^5
+    "@types/jest": ^27.0.3
+    "@types/node": ^14
+    "@typescript-eslint/eslint-plugin": ^5.4.0
+    "@typescript-eslint/parser": ^5.4.0
+    bech32: ^2.0.0
+    bignumber.js: ^9.0.1
+    cli-ux: ^5.6.4
+    eslint: ^7.32.0
+    eslint-config-oclif: ^4.0.0
+    eslint-config-oclif-typescript: ^1.0.2
+    eslint-config-prettier: ^8.3.0
+    eslint-plugin-prettier: ^4.0.0
+    eslint-plugin-unicorn: ^38.0.1
+    globby: ^10
+    jest: ^27.3.1
+    nock: ^13.2.1
+    oclif: 2.0.0-main.10
+    prettier: ^2.4.1
+    safe-stable-stringify: ^2.2.0
+    stdout-stderr: ^0.1.13
+    ts-jest: ^27.0.7
+    ts-node: ^10.4.0
+    tslib: ^1
+    typescript: 4.4.4
+  bin:
+    bcc: ./bin/run
+    blockfrost-cardano-cli: ./bin/run
+  languageName: unknown
+  linkType: soft
+
 "@blockfrost/openapi@npm:0.1.33":
   version: 0.1.33
   resolution: "@blockfrost/openapi@npm:0.1.33"
@@ -2097,42 +2134,6 @@ __metadata:
   checksum: e652234249cbdb3345488d52b5e76e8572b8e5333f3f0d5e716772b7c5d2142f433c3fe86130e92117329532e1d1235cdaa89f40bbca27a8ae528bef428241ef
   languageName: node
   linkType: hard
-
-"blockfrost-cardano-cli@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "blockfrost-cardano-cli@workspace:."
-  dependencies:
-    "@blockfrost/blockfrost-js": 3.0.0-beta.10
-    "@oclif/core": 1.0.4
-    "@oclif/plugin-help": ^5
-    "@types/jest": ^27.0.3
-    "@types/node": ^14
-    "@typescript-eslint/eslint-plugin": ^5.4.0
-    "@typescript-eslint/parser": ^5.4.0
-    bech32: ^2.0.0
-    bignumber.js: ^9.0.1
-    cli-ux: ^5.6.4
-    eslint: ^7.32.0
-    eslint-config-oclif: ^4.0.0
-    eslint-config-oclif-typescript: ^1.0.2
-    eslint-config-prettier: ^8.3.0
-    eslint-plugin-prettier: ^4.0.0
-    eslint-plugin-unicorn: ^38.0.1
-    globby: ^10
-    jest: ^27.3.1
-    nock: ^13.2.1
-    oclif: 2.0.0-main.10
-    prettier: ^2.4.1
-    safe-stable-stringify: ^2.2.0
-    stdout-stderr: ^0.1.13
-    ts-jest: ^27.0.7
-    ts-node: ^10.4.0
-    tslib: ^1
-    typescript: 4.4.4
-  bin:
-    blockfrost-cardano-cli: ./bin/run
-  languageName: unknown
-  linkType: soft
 
 "brace-expansion@npm:^1.1.7":
   version: 1.1.11
