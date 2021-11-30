@@ -1,8 +1,8 @@
 import { stdout } from 'stdout-stderr';
-import { PoolParams } from '../pool-parameters';
+import { PoolParams } from '../pool-params';
 import * as nock from 'nock';
 
-describe('query pool-parameters', () => {
+describe('query pool-params', () => {
   it('should print pool parameters (with futurePoolParams)', async () => {
     nock('https://cardano-testnet.blockfrost.io:443', { encodedQueryParams: true })
       .get('/api/v0/pools/a5a3ce765f5162548181a44d1ff8c8f8c50018cca59acc0b70a85a41/metadata')
