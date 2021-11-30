@@ -1,5 +1,5 @@
 import { Responses } from '@blockfrost/blockfrost-js';
-import Big from 'big.js';
+import BigNumber from 'bignumber.js';
 import { cli } from 'cli-ux';
 import { BaseCommand } from '../../helpers/BaseCommand';
 
@@ -52,7 +52,9 @@ export class StakeDistribution extends BaseCommand {
   prettyPrint = (res: Data[]) => {
     const calculatedData = res.map(stake => ({
       pool_id: stake.pool_id,
-      frac: Big(stake.numerator.toString()).div(Big(stake.denominator.toString())).toExponential(3),
+      frac: new BigNumber(stake.numerator.toString())
+        .div(stake.denominator.toString())
+        .toExponential(3),
     }));
     this.log();
     try {
@@ -99,6 +101,7 @@ export class StakeDistribution extends BaseCommand {
     const pools = await client.poolsAll();
     const allStakes: {
       pool_id: string;
+      pool_hex: string;
       live_stake: BigInt;
     }[] = [];
     const SMALL_BATCH = 10;
@@ -135,6 +138,7 @@ export class StakeDistribution extends BaseCommand {
         const liveStake = BigInt(res.live_stake);
         allStakes.push({
           pool_id: res.pool_id,
+          pool_hex: res.hex,
           live_stake: liveStake,
         });
         stakesSum += liveStake;
@@ -147,11 +151,16 @@ export class StakeDistribution extends BaseCommand {
     // cli.action.stop();
     progressBar.stop();
 
-    const formattedStakes = allStakes.map(stake => ({
-      pool_id: stake.pool_id,
-      numerator: stake.live_stake,
-      denominator: stakesSum,
-    }));
+    const formattedStakes = allStakes
+      // sort by pool hex
+      .sort((a, b) =>
+        new BigNumber('0x' + a.pool_hex, 16).comparedTo(new BigNumber('0x' + b.pool_hex, 16)),
+      )
+      .map(stake => ({
+        pool_id: stake.pool_id,
+        numerator: stake.live_stake,
+        denominator: stakesSum,
+      }));
     return formattedStakes;
   };
 }
