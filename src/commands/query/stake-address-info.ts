@@ -26,7 +26,7 @@ export class StakeAddressInfo extends BaseCommand {
     const response = [
       {
         address: account.stake_address,
-        rewardAccountBalance: stringToBigInt(account.withdrawable_amount), // verify?
+        rewardAccountBalance: stringToBigInt(account.withdrawable_amount),
         delegation: account.pool_id,
       },
     ];

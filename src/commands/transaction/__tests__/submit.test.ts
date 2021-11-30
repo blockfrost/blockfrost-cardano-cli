@@ -4,6 +4,7 @@ import * as blockfrostService from '../../../services/blockfrost';
 import { Submit } from '../submit';
 
 describe('transaction submit', () => {
+  // TODO: mock txSubmit error
   it('should read tx from file and submit it via client.txSubmit', async () => {
     const files = ['txFile1', 'txFile2'];
     for (let i = 0; i < files.length; i++) {
