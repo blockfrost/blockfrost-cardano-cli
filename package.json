@@ -1,9 +1,12 @@
 {
-  "name": "blockfrost-cardano-cli",
+  "name": "@blockfrost/cardano-cli",
   "description": "Drop-in(ish) replacement for cardano-cli powered by Blockfrost",
   "version": "0.0.1-beta.1",
   "author": "@blockfrost",
-  "bin": "./bin/run",
+  "bin": {
+    "bcc": "./bin/run",
+    "blockfrost-cardano-cli": "./bin/run"
+  },
   "bugs": "https://github.com/blockfrost/blockfrost-cardano-cli/issues",
   "dependencies": {
     "@blockfrost/blockfrost-js": "3.0.0-beta.10",

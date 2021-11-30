@@ -10,6 +10,8 @@ If you have Node.js installed the fastest way to install the CLI is directly wit
 
 `npm install -g @blockfrost/cardano-cli`
 
+After the installation is completed new commands `blockfrost-cardano-cli` and its shorter alias `bcc` should be available.
+
 ## Setup
 
 In order to use Blockfrost Cardano CLI you first need generate project token(s) on [Blockfrost.io](https://blockfrost.io).
