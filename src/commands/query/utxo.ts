@@ -85,7 +85,7 @@ export class Utxo extends BaseCommand {
               .join(' + '),
         },
       },
-      { printLine: this.log, 'no-truncate': true },
+      { printLine: (s: any) => this.log(s), 'no-truncate': true },
     );
     this.log();
   };

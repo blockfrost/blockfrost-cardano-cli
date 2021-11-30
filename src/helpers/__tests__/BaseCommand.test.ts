@@ -41,6 +41,7 @@ describe('BaseCommand', () => {
 
   afterAll(() => {
     process.env = ORIGINAL_ENV;
+    jest.restoreAllMocks();
   });
 
   it('should prettyPrint response from doWork', async () => {
@@ -109,7 +110,8 @@ describe('BaseCommand - 2nd part (runs in series)', () => {
   const ORIGINAL_ENV = process.env;
   beforeEach(() => {
     jest.resetModules();
-    process.env = { ...ORIGINAL_ENV };
+    // reset process.env
+    process.env = {};
   });
 
   afterAll(() => {
@@ -117,8 +119,6 @@ describe('BaseCommand - 2nd part (runs in series)', () => {
   });
 
   it('should print error when BLOCKFROST_PROJECT_ID_MAINNET is not set', async () => {
-    process.env.BLOCKFROST_PROJECT_ID_MAINNET = undefined;
-    process.env.BLOCKFROST_PROJECT_ID_TESNET = undefined;
     expect(async () => await TestClientCommand.run([])).rejects.toHaveProperty(
       'message',
       util.format(ERROR.ENV_PROJECT_ID_NOT_SET, 'BLOCKFROST_PROJECT_ID_MAINNET'),
@@ -128,8 +128,6 @@ describe('BaseCommand - 2nd part (runs in series)', () => {
   });
 
   it('should print error when BLOCKFROST_PROJECT_ID_TESTNET is not set', async () => {
-    process.env.BLOCKFROST_PROJECT_ID_MAINNET = undefined;
-    process.env.BLOCKFROST_PROJECT_ID_TESNET = undefined;
     expect(async () => await TestClientCommand.run(['--testnet'])).rejects.toHaveProperty(
       'message',
       util.format(ERROR.ENV_PROJECT_ID_NOT_SET, 'BLOCKFROST_PROJECT_ID_TESTNET'),
