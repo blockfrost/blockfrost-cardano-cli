@@ -1,4 +1,3 @@
-import * as path from 'path';
 import { stdout } from 'stdout-stderr';
 import * as blockfrostService from '../../../services/blockfrost';
 import { Tip } from '../tip';
@@ -19,7 +18,7 @@ describe('query tip', () => {
     jest
       .spyOn(blockfrostService, 'createBlockfrostClient')
       // @ts-ignore partial mock
-      .mockImplementation((testnet?: boolean) => {
+      .mockImplementation((_testnet?: boolean) => {
         return {
           blocksLatest: mockedBlocksLatest,
         };

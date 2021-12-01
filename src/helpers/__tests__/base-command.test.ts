@@ -1,6 +1,6 @@
-import { BaseCommand } from '../BaseCommand';
+import { BaseCommand } from '../base-command';
 import { stdout } from 'stdout-stderr';
-import * as util from 'util';
+import { format } from 'util';
 import * as fs from 'fs';
 import * as blockfrostService from '../../services/blockfrost';
 
@@ -24,10 +24,10 @@ export class TestCommand extends BaseCommand {
 
 export class TestClientCommand extends BaseCommand {
   doWork = async () => {
-    const { flags } = await this.parse(TestCommand);
-    const client = await this.getClient();
-    const client2 = await this.getClient();
-    const client3 = await this.getClient();
+    await this.parse(TestCommand);
+    await this.getClient();
+    await this.getClient();
+    await this.getClient();
     return 'test complete';
   };
 }
@@ -65,7 +65,9 @@ describe('BaseCommand', () => {
   });
 
   it('should save the response to --out-file', async () => {
-    jest.spyOn(fs, 'writeFileSync').mockImplementation((path, data) => {});
+    jest.spyOn(fs, 'writeFileSync').mockImplementation((_path, _data) => {
+      // do nothing
+    });
     await TestCommand.run(['--out-file', 'filename']);
     expect(fs.writeFileSync).toHaveBeenCalledTimes(1);
     expect(fs.writeFileSync).toHaveBeenCalledWith(
@@ -119,20 +121,24 @@ describe('BaseCommand - 2nd part (runs in series)', () => {
   });
 
   it('should print error when BLOCKFROST_PROJECT_ID_MAINNET is not set', async () => {
-    expect(async () => await TestClientCommand.run([])).rejects.toHaveProperty(
+    expect(async () => TestClientCommand.run([])).rejects.toHaveProperty(
       'message',
-      util.format(ERROR.ENV_PROJECT_ID_NOT_SET, 'BLOCKFROST_PROJECT_ID_MAINNET'),
+      format(ERROR.ENV_PROJECT_ID_NOT_SET, 'BLOCKFROST_PROJECT_ID_MAINNET'),
     );
     // workaround ReferenceError: You are trying to `import` a file after the Jest environment has been torn down
-    await new Promise(resolve => setTimeout(() => resolve(true), 500));
+    await new Promise(resolve => {
+      setTimeout(() => resolve(true), 500);
+    });
   });
 
   it('should print error when BLOCKFROST_PROJECT_ID_TESTNET is not set', async () => {
-    expect(async () => await TestClientCommand.run(['--testnet'])).rejects.toHaveProperty(
+    expect(async () => TestClientCommand.run(['--testnet'])).rejects.toHaveProperty(
       'message',
-      util.format(ERROR.ENV_PROJECT_ID_NOT_SET, 'BLOCKFROST_PROJECT_ID_TESTNET'),
+      format(ERROR.ENV_PROJECT_ID_NOT_SET, 'BLOCKFROST_PROJECT_ID_TESTNET'),
     );
     // workaround ReferenceError: You are trying to `import` a file after the Jest environment has been torn down
-    await new Promise(resolve => setTimeout(() => resolve(true), 500));
+    await new Promise(resolve => {
+      setTimeout(() => resolve(true), 500);
+    });
   });
 });

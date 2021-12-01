@@ -7,7 +7,7 @@ export const writeToFile = (
 ): void => {
   try {
     writeFileSync(filePath, data);
-  } catch (err) {
-    throw Error(`${ERROR.FILE_WRITE_FAIL}: ${filePath}`);
+  } catch {
+    throw new Error(`${ERROR.FILE_WRITE_FAIL}: ${filePath}`);
   }
 };

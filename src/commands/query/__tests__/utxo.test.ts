@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import * as fs from 'fs';
 import { stdout } from 'stdout-stderr';
 import * as blockfrostService from '../../../services/blockfrost';
@@ -33,14 +34,14 @@ const utxos = [
 let mockedAdressesUtxosAll: any;
 describe('query utxo', () => {
   beforeEach(() => {
-    mockedAdressesUtxosAll = jest.fn((address: string) => {
+    mockedAdressesUtxosAll = jest.fn((_address: string) => {
       return utxos;
     });
 
     jest
       .spyOn(blockfrostService, 'createBlockfrostClient')
       // @ts-ignore partial mock
-      .mockImplementation((testnet?: boolean) => {
+      .mockImplementation((_testnet?: boolean) => {
         return {
           addressesUtxosAll: mockedAdressesUtxosAll,
         };
@@ -79,7 +80,9 @@ describe('query utxo', () => {
   });
 
   it('should save the response to --out-file', async () => {
-    jest.spyOn(fs, 'writeFileSync').mockImplementation((path, data) => {});
+    jest.spyOn(fs, 'writeFileSync').mockImplementation((_path, _data) => {
+      // do nothing
+    });
     await Utxo.run(['--address', address, '--out-file', 'filename']);
     expect(fs.writeFileSync).toHaveBeenCalledTimes(1);
 

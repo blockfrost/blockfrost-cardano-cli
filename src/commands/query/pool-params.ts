@@ -7,8 +7,7 @@ import {
   transformPoolUpdateCert,
 } from '../../utils/format';
 import { Awaited } from '../../utils/types';
-import { BaseCommand } from '../../helpers/BaseCommand';
-import { ERROR } from '../../constants/errors';
+import { BaseCommand } from '../../helpers/base-command';
 
 // cardano-cli response
 // {

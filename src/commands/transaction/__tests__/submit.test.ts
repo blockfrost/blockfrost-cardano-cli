@@ -1,4 +1,6 @@
+/* eslint-disable camelcase */
 import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
+// eslint-disable-next-line unicorn/import-style
 import * as path from 'path';
 import * as nock from 'nock';
 import { stdout } from 'stdout-stderr';
@@ -8,9 +10,9 @@ import { Submit } from '../submit';
 describe('transaction submit', () => {
   it('should read tx from file and submit it via client.txSubmit', async () => {
     const files = ['txFile1', 'txFile2'];
-    for (let i = 0; i < files.length; i++) {
-      const filename = path.join(__dirname, `../__fixtures__/${files[i]}`);
-      const mockedTxSubmit = jest.fn((tx: any) => {
+    for (const file of files) {
+      const filename = path.join(__dirname, `../__fixtures__/${file}`);
+      const mockedTxSubmit = jest.fn((_tx: any) => {
         return 'txHash';
       });
       // Mocking fs breaks test. for now using real files from __fixtures__ folder
@@ -19,12 +21,13 @@ describe('transaction submit', () => {
       jest
         .spyOn(blockfrostService, 'createBlockfrostClient')
         // @ts-ignore partial mock
-        .mockImplementation((testnet?: boolean) => {
+        .mockImplementation((_testnet?: boolean) => {
           return {
             txSubmit: mockedTxSubmit,
           };
         });
       stdout.start();
+      // eslint-disable-next-line no-await-in-loop
       await Submit.run(['--tx-file', filename]);
       stdout.stop();
 
@@ -100,9 +103,7 @@ describe('transaction submit', () => {
 
     stdout.start();
     // nock.recorder.rec();
-    expect(
-      async () => await Submit.run(['--testnet', '--tx-file', filename]),
-    ).rejects.toHaveProperty(
+    expect(async () => Submit.run(['--testnet', '--tx-file', filename])).rejects.toHaveProperty(
       'message',
       'Command failed: transaction read error RawCborDecodeError [DecoderErrorDeserialiseFailure \\"Byron Tx\\" (DeserialiseFailure 0 \\"end of input\\"),DecoderErrorDeserialiseFailure \\"Shelley Tx\\" (DeserialiseFailure 0 \\"end of input\\"),DecoderErrorDeserialiseFailure \\"Shelley Tx\\" (DeserialiseFailure 0 \\"end of input\\"),DecoderErrorDeserialiseFailure \\"Shelley Tx\\" (DeserialiseFailure 0 \\"end of input\\"),DecoderErrorDeserialiseFailure \\"Shelley Tx\\" (DeserialiseFailure 0 \\"end of input\\")]',
     );
@@ -112,6 +113,8 @@ describe('transaction submit', () => {
     const output = stdout.output;
     expect(output.includes('Transaction successfully submitted')).toBe(false);
     // workaround ReferenceError: You are trying to `import` a file after the Jest environment has been torn down
-    await new Promise(resolve => setTimeout(() => resolve(true), 500));
+    await new Promise(resolve => {
+      setTimeout(() => resolve(true), 500);
+    });
   });
 });
