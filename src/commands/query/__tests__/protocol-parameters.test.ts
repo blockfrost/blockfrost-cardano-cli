@@ -1,8 +1,25 @@
+import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
 import { stdout } from 'stdout-stderr';
-import { ProtocolParameters } from '../protocol-parameters';
 import * as nock from 'nock';
+import { ProtocolParameters } from '../protocol-parameters';
+import * as blockfrostService from '../../../services/blockfrost';
 
 describe('query protocol-parameters', () => {
+  beforeEach(() => {
+    jest
+      .spyOn(blockfrostService, 'createBlockfrostClient')
+      .mockImplementation((testnet?: boolean) => {
+        // omit check for missing env variable for project id
+        return new BlockFrostAPI({
+          projectId: 'testnet123',
+          isTestnet: Boolean(testnet),
+        });
+      });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
   it('should print protocol parameters', async () => {
     nock('https://cardano-testnet.blockfrost.io:443', { encodedQueryParams: true })
       .get('/api/v0/epochs/latest')
