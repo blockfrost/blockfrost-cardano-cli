@@ -19,10 +19,10 @@ After the installation is completed new commands `blockfrost-cardano-cli` and it
 Build the docker container by running following command within the repository:
 
 ```console
-docker build . -t blockfrost-cardano-cli
+docker build . -t blockfrost-cardano-cli --no-cache
 ```
 
-Then can use `docker run` with `--env` flag to pass environment variables into a docker container:
+Then run `docker run` with `--env` flag to pass environment variables into a docker container:
 
 ```console
 docker run --env BLOCKFROST_PROJECT_ID_MAINNET=<PROJECT_ID> blockfrost-cardano-cli --help
