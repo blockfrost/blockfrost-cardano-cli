@@ -52,7 +52,7 @@ export class Submit extends BaseCommand {
       return response;
     } catch (err) {
       if (err instanceof BlockfrostServerError || err instanceof BlockfrostClientError) {
-        this.log(`Command failed: ${stripQuotes(err.message)}`); // matching cardano-cli
+        this.error(`Command failed: ${stripQuotes(err.message)}`); // matching cardano-cli (if we want really 1:1 output  compatibility we should use this.log which doesn't add visuals in front of error message) and exit the process manually)
       } else {
         throw err;
       }
