@@ -9,7 +9,7 @@ Drop-in(ish) replacement for cardano-cli. Query the blockchain without the need 
 If you have Node.js installed the fastest way to install the CLI is directly with npm. For instructions for installing Node.js please see [nodejs.org](https://nodejs.org/en/download/). Although the CLI should run on Node.js v14 just fine, we recommend v16 which is active LTS.
 
 ```console
-npm install -g @blockfrost/cardano-cli
+npm install -g @blockfrost/blockfrost-cardano-cli
 ```
 
 After the installation is completed new commands `blockfrost-cardano-cli` and its shorter alias `bcc` should be available.
