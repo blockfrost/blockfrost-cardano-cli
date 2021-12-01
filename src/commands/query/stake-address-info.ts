@@ -1,7 +1,6 @@
 import { Flags } from '@oclif/core';
-import { ERROR } from '../../constants/errors';
 import { stringToBigInt } from '../../utils/format';
-import { BaseCommand } from '../../helpers/BaseCommand';
+import { BaseCommand } from '../../helpers/base-command';
 
 // cardano-cli response
 // [

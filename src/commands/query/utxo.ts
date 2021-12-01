@@ -1,9 +1,8 @@
 /* eslint-disable camelcase */
 import { Responses } from '@blockfrost/blockfrost-js';
 import { cli } from 'cli-ux';
-import { ERROR } from '../../constants/errors';
 import { assetsToPolicies, parseAsset } from '../../utils/parsing';
-import { BaseCommand } from '../../helpers/BaseCommand';
+import { BaseCommand } from '../../helpers/base-command';
 import { Flags } from '@oclif/core';
 
 // cardano-cli response

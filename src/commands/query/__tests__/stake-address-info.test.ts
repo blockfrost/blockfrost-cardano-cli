@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { stdout } from 'stdout-stderr';
 import * as blockfrostService from '../../../services/blockfrost';
 import { StakeAddressInfo } from '../stake-address-info';
@@ -17,14 +18,14 @@ describe('query stake-address-info', () => {
       pool_id: 'pool1c89d4drtwn0048mekkdkzllz559ahnntxelyw2mppxnmc36hjlx',
     };
 
-    const mockedAccounts = jest.fn((address: string) => {
+    const mockedAccounts = jest.fn((_address: string) => {
       return fakeAccount;
     });
 
     jest
       .spyOn(blockfrostService, 'createBlockfrostClient')
       // @ts-ignore partial mock
-      .mockImplementation((testnet?: boolean) => {
+      .mockImplementation((_testnet?: boolean) => {
         return {
           accounts: mockedAccounts,
         };

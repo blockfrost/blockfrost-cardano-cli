@@ -1,4 +1,4 @@
-import { BaseCommand } from '../../helpers/BaseCommand';
+import { BaseCommand } from '../../helpers/base-command';
 
 // cardano-cli response
 // pool1qqyjr9pcrv97gwrueunug829fs5znw6p2wxft3fvqkgu5f4qlrg

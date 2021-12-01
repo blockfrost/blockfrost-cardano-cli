@@ -4,8 +4,10 @@ import { readFileSync } from 'fs';
 import { ERROR } from '../../constants/errors';
 import { stripQuotes } from '../../utils/format';
 import { isJsonString } from '../../utils/parsing';
-import { BaseCommand } from '../../helpers/BaseCommand';
+import { BaseCommand } from '../../helpers/base-command';
 
+// cardano-cli doesn't support --out-file flag with transaction submit command, we do
+// The file will contain txHash (txid) of the transaction
 export class Submit extends BaseCommand {
   static flags = {
     ...BaseCommand.flags,
@@ -30,15 +32,19 @@ export class Submit extends BaseCommand {
     }
 
     const tx: string | Record<'cborHex', string> = JSON.parse(trimmedData);
-    if (typeof tx === 'object' && tx !== null) {
-      if ('cborHex' in tx && typeof tx.cborHex === 'string') {
-        return tx.cborHex;
-      }
+    if (
+      typeof tx === 'object' &&
+      tx !== null &&
+      'cborHex' in tx &&
+      typeof tx.cborHex === 'string'
+    ) {
+      return tx.cborHex;
     }
+
     throw new Error(ERROR.TX_FILE_UNKNOWN_FORMAT);
   };
 
-  prettyPrint = (data: string) => {
+  prettyPrint = (_data: string) => {
     this.log('Transaction successfully submitted.');
   };
 
@@ -50,11 +56,11 @@ export class Submit extends BaseCommand {
     try {
       const response = await client.txSubmit(transaction);
       return response;
-    } catch (err) {
-      if (err instanceof BlockfrostServerError || err instanceof BlockfrostClientError) {
-        this.error(`Command failed: ${stripQuotes(err.message)}`); // matching cardano-cli (if we want really 1:1 output  compatibility we should use this.log which doesn't add visuals in front of error message) and exit the process manually)
+    } catch (error) {
+      if (error instanceof BlockfrostServerError || error instanceof BlockfrostClientError) {
+        this.error(`Command failed: ${stripQuotes(error.message)}`); // matching cardano-cli (if we want really 1:1 output  compatibility we should use this.log which doesn't add visuals in front of error message) and exit the process manually)
       } else {
-        throw err;
+        throw error;
       }
     }
   };

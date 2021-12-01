@@ -1,6 +1,6 @@
 import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
 import { ERROR } from '../../constants/errors';
-import * as util from 'util';
+import { format } from 'util';
 import { ENV_VAR_PROJECT_ID } from '../../constants';
 
 export const createBlockfrostClient = (testnet?: boolean) => {
@@ -8,7 +8,7 @@ export const createBlockfrostClient = (testnet?: boolean) => {
   const projectId = process.env[envVarName];
 
   if (!projectId) {
-    throw new Error(util.format(ERROR.ENV_PROJECT_ID_NOT_SET, envVarName));
+    throw new Error(format(ERROR.ENV_PROJECT_ID_NOT_SET, envVarName));
   }
 
   return new BlockFrostAPI({

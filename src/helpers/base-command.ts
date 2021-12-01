@@ -1,4 +1,4 @@
-import * as util from 'util';
+import { format } from 'util';
 import { Command, Config, Flags } from '@oclif/core';
 import { BlockFrostAPI, BlockfrostServerError } from '@blockfrost/blockfrost-js';
 import { ERROR } from '../constants/errors';
@@ -45,12 +45,12 @@ export abstract class BaseCommand extends Command {
         if (!flags.testnet) {
           // insert testnet flag and remove --testnet-magic TESTNET_MAGIC
           this.argv.push('--testnet');
-          const magicIndex = this.argv.findIndex(a => a === '--testnet-magic');
+          const magicIndex = this.argv.indexOf('--testnet-magic');
           this.argv.splice(magicIndex, 2);
           // flags.testnet = true; // probably useless
         }
       } else {
-        throw Error(ERROR.FLAG_UNSUPPORTED_TESTNET_MAGIC);
+        throw new Error(ERROR.FLAG_UNSUPPORTED_TESTNET_MAGIC);
       }
     }
   }
@@ -65,6 +65,7 @@ export abstract class BaseCommand extends Command {
       const { flags } = await this.parseBaseCommand();
       this.client = createBlockfrostClient(flags.testnet);
     }
+
     return this.client;
   }
 
@@ -78,21 +79,20 @@ export abstract class BaseCommand extends Command {
     if (!flags['out-file']) {
       throw new Error(ERROR.FLAG_MISSING_OUT_FILE);
     }
+
     writeToFile(flags['out-file'], stringify(data));
   }
 
   async catch(err: Record<string, any>) {
-    if (err instanceof BlockfrostServerError) {
-      if (err.message.includes('Network token mismatch')) {
-        const { flags } = await this.parseBaseCommand();
-        const envVarName = flags.testnet ? ENV_VAR_PROJECT_ID.TESTNET : ENV_VAR_PROJECT_ID.MAINNET;
-        this.error(
-          util.format(
-            'Network token mismatch.\nUse --tesnet for testnet network or check if environment variable %s is set correctly.',
-            envVarName,
-          ),
-        );
-      }
+    if (err instanceof BlockfrostServerError && err.message.includes('Network token mismatch')) {
+      const { flags } = await this.parseBaseCommand();
+      const envVarName = flags.testnet ? ENV_VAR_PROJECT_ID.TESTNET : ENV_VAR_PROJECT_ID.MAINNET;
+      this.error(
+        format(
+          'Network token mismatch.\nUse --tesnet for testnet network or check if environment variable %s is set correctly.',
+          envVarName,
+        ),
+      );
     }
 
     return super.catch(err);
@@ -111,6 +111,7 @@ export abstract class BaseCommand extends Command {
     if (flags['out-file']) {
       await this.toFile(result);
     }
+
     return this;
   };
 }

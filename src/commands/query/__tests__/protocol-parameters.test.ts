@@ -102,7 +102,6 @@ describe('query protocol-parameters', () => {
     stdout.stop();
 
     const output = stdout.output;
-    console.log(output);
     expect(JSON.parse(output)).toMatchObject({
       txFeePerByte: 44,
       minUTxOValue: 34482,

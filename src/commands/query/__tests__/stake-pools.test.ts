@@ -18,7 +18,7 @@ describe('query tip', () => {
     jest
       .spyOn(blockfrostService, 'createBlockfrostClient')
       // @ts-ignore partial mock
-      .mockImplementation((testnet?: boolean) => {
+      .mockImplementation((_testnet?: boolean) => {
         return {
           poolsAll: mockedPoolsAll,
         };

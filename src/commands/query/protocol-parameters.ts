@@ -1,4 +1,4 @@
-import { BaseCommand } from '../../helpers/BaseCommand';
+import { BaseCommand } from '../../helpers/base-command';
 import { stringToBigInt } from '../../utils/format';
 
 // cardano-cli response
@@ -243,9 +243,7 @@ export class ProtocolParameters extends BaseCommand {
         memory: stringToBigInt(epochParams.max_tx_ex_mem),
         steps: stringToBigInt(epochParams.max_tx_ex_steps),
       },
-      costModels: {
-        // TODO
-      },
+      costModels: {},
       protocolVersion: {
         minor: epochParams.protocol_minor_ver,
         major: epochParams.protocol_major_ver,

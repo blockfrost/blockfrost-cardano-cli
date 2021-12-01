@@ -1,7 +1,8 @@
+/* eslint-disable camelcase */
 import { Responses } from '@blockfrost/blockfrost-js';
 import BigNumber from 'bignumber.js';
 import { cli } from 'cli-ux';
-import { BaseCommand } from '../../helpers/BaseCommand';
+import { BaseCommand } from '../../helpers/base-command';
 
 // cardano-cli response
 // PoolId                                 Stake frac
@@ -71,9 +72,10 @@ export class StakeDistribution extends BaseCommand {
         },
         { printLine: console.log, 'no-truncate': true },
       );
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
+
     this.log();
   };
 
@@ -85,7 +87,7 @@ export class StakeDistribution extends BaseCommand {
         denominator: BigInt;
       }
     > = {};
-    data.map(stake => {
+    data.forEach(stake => {
       stakePerPool[stake.pool_id] = {
         numerator: stake.numerator,
         denominator: stake.denominator,
@@ -97,7 +99,6 @@ export class StakeDistribution extends BaseCommand {
   doWork = async () => {
     const client = await this.getClient();
 
-    // TODO: refactor once we have proper endpoint for stake distribution
     const pools = await client.poolsAll();
     const allStakes: {
       pool_id: string;
@@ -110,11 +111,11 @@ export class StakeDistribution extends BaseCommand {
     let stakesSum = BigInt(0);
 
     const getPromiseBundle = (startIndex: number, batchSize: number) => {
-      const promises = [...Array(batchSize).keys()].map(i => {
+      const promises = [...Array.from({ length: batchSize }).keys()].map(i => {
         const poolId = pools[startIndex + i];
         return poolId ? client.poolsById(poolId) : undefined;
       });
-      return promises.filter(p => !!p) as unknown as Responses['pool'][];
+      return promises.filter(p => Boolean(p)) as unknown as Responses['pool'][];
     };
 
     // cli.action.start('Fetching pools');
@@ -130,8 +131,13 @@ export class StakeDistribution extends BaseCommand {
       const promiseSlice = getPromiseBundle(i, batch_size);
       if (batch_size === SMALL_BATCH) {
         // wait 1 second before each small batch
-        await new Promise(resolve => setTimeout(() => resolve(true), 1000));
+        // eslint-disable-next-line no-await-in-loop
+        await new Promise(resolve => {
+          setTimeout(() => resolve(true), 1000);
+        });
       }
+
+      // eslint-disable-next-line no-await-in-loop
       const partialResults = await Promise.all(promiseSlice);
       progressBar.update(i);
       partialResults.forEach(res => {
@@ -148,6 +154,7 @@ export class StakeDistribution extends BaseCommand {
         batch_size = SMALL_BATCH;
       }
     }
+
     // cli.action.stop();
     progressBar.stop();
 

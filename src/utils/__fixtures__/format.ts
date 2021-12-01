@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 export const bech32ToHex = [
   {
     description: 'Testnet address',
@@ -83,16 +84,16 @@ export const stringify = [
       },
     },
     result: `{
-    \"z\": [
+    "z": [
         1,
         2,
         3
     ],
-    \"a\": \"a\",
-    \"b\": 1,
-    \"c\": {
-        \"bc\": 90071992547409910000,
-        \"ab\": 2
+    "a": "a",
+    "b": 1,
+    "c": {
+        "bc": 90071992547409910000,
+        "ab": 2
     }
 }`,
   },
