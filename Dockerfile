@@ -1,9 +1,7 @@
 FROM node:16-alpine
 
-COPY . /app
 WORKDIR /app
 
-RUN yarn install
-RUN npm pack && npm install -g blockfrost-*.tgz
+RUN npm install -g @blockfrost/blockfrost-cardano-cli
 
 ENTRYPOINT ["/usr/local/bin/bcc"]
