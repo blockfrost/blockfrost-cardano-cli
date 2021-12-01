@@ -4,6 +4,6 @@ COPY . /app
 WORKDIR /app
 
 RUN yarn install
-RUN npm pack && npm install -g blockfrost-cardano-cli-*.tgz
+RUN npm pack && npm install -g blockfrost-*.tgz
 
 ENTRYPOINT ["/usr/local/bin/bcc"]
