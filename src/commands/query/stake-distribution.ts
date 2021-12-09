@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-import { Responses } from '@blockfrost/blockfrost-js';
 import BigNumber from 'bignumber.js';
 import { cli } from 'cli-ux';
 import { BaseCommand } from '../../helpers/base-command';
@@ -58,23 +57,19 @@ export class StakeDistribution extends BaseCommand {
         .toExponential(3),
     }));
     this.log();
-    try {
-      cli.table(
-        calculatedData,
-        {
-          pool_id: {
-            header: 'PoolId',
-            minWidth: 30,
-          },
-          frac: {
-            header: 'Stake frac',
-          },
+    cli.table(
+      calculatedData,
+      {
+        pool_id: {
+          header: 'PoolId',
+          minWidth: 30,
         },
-        { printLine: console.log, 'no-truncate': true },
-      );
-    } catch (error) {
-      console.error(error);
-    }
+        frac: {
+          header: 'Stake frac',
+        },
+      },
+      { printLine: line => this.log(line), 'no-truncate': true },
+    );
 
     this.log();
   };
@@ -99,64 +94,18 @@ export class StakeDistribution extends BaseCommand {
   doWork = async () => {
     const client = await this.getClient();
 
-    const pools = await client.poolsAll();
-    const allStakes: {
-      pool_id: string;
-      pool_hex: string;
-      live_stake: BigInt;
-    }[] = [];
-    const SMALL_BATCH = 10;
-    const LARGE_BATCH = 100;
-    let batch_size = LARGE_BATCH;
+    const poolsExtended = await client.poolsExtendedAll({ batchSize: 50 });
+
     let stakesSum = BigInt(0);
-
-    const getPromiseBundle = (startIndex: number, batchSize: number) => {
-      const promises = [...Array.from({ length: batchSize }).keys()].map(i => {
-        const poolId = pools[startIndex + i];
-        return poolId ? client.poolsById(poolId) : undefined;
-      });
-      return promises.filter(p => Boolean(p)) as unknown as Responses['pool'][];
-    };
-
-    // cli.action.start('Fetching pools');
-    const progressBar = cli.progress({
-      format: '{value}/{total} pools {bar}',
-      barCompleteChar: '\u2588',
-      barIncompleteChar: '\u2591',
+    const allStakes = poolsExtended.map(res => {
+      const liveStake = BigInt(res.live_stake);
+      stakesSum += liveStake;
+      return {
+        pool_id: res.pool_id,
+        pool_hex: res.hex,
+        live_stake: liveStake,
+      };
     });
-    progressBar.start(pools.length, 0);
-    // Blockfrost API allows burst of 500 request, then we can only make 10 requests per second
-    for (let i = 0; i < pools.length; i += batch_size) {
-      // this.log(`Fetching pools ${i + batch_size}/${pools.length}`);
-      const promiseSlice = getPromiseBundle(i, batch_size);
-      if (batch_size === SMALL_BATCH) {
-        // wait 1 second before each small batch
-        // eslint-disable-next-line no-await-in-loop
-        await new Promise(resolve => {
-          setTimeout(() => resolve(true), 1000);
-        });
-      }
-
-      // eslint-disable-next-line no-await-in-loop
-      const partialResults = await Promise.all(promiseSlice);
-      progressBar.update(i);
-      partialResults.forEach(res => {
-        const liveStake = BigInt(res.live_stake);
-        allStakes.push({
-          pool_id: res.pool_id,
-          pool_hex: res.hex,
-          live_stake: liveStake,
-        });
-        stakesSum += liveStake;
-      });
-      if (i >= 400) {
-        // after 400 request switch to small batch
-        batch_size = SMALL_BATCH;
-      }
-    }
-
-    // cli.action.stop();
-    progressBar.stop();
 
     const formattedStakes = allStakes
       // sort by pool hex
