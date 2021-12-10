@@ -6,7 +6,7 @@ import * as blockfrostService from '../../../services/blockfrost';
 import { StakeDistribution } from '../stake-distribution';
 // import * as nock from 'nock';
 // import path = require('path');
-import { loadRecord } from './__snapshots__/stake-distribution-nock';
+import { loadRecord } from './__mocks__/stake-distribution-nock.test';
 
 describe('query stake-distribution', () => {
   beforeEach(() => {
@@ -33,7 +33,7 @@ describe('query stake-distribution', () => {
     // nock.recorder.rec({
     //   use_separator: false,
     //   logging: content =>
-    //     fs.appendFileSync(path.join(__dirname, `../__snapshots__/stake-distribution-nock.ts`), content),
+    //     fs.appendFileSync(path.join(__dirname, `../__mocks__/stake-distribution-nock.test.ts`), content),
     // });
     await StakeDistribution.run(['--testnet', '--json']);
     // nock.restore();
