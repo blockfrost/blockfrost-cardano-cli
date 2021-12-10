@@ -40,7 +40,6 @@ describe('query stake-distribution', () => {
     stdout.stop();
 
     const output = stdout.output;
-    console.log('output', output);
 
     const poolForSanityCheck = 'pool1luenk0hazsrdj2ah6dakhv4w70xs3v46zu3zh8sdfdqav0j07un';
     const result = JSON.parse(output);
