@@ -1,6 +1,18 @@
+![master build ci](https://github.com/blockfrost/blockfrost-cardano-cli/actions/workflows/build.yml/badge.svg?branch=master) [![npm version](https://badge.fury.io/js/%40blockfrost%2Fblockfrost-cardano-cli.svg)](https://badge.fury.io/js/%40blockfrost%2Fblockfrost-cardano-cli) ![downloads](https://img.shields.io/npm/dy/@blockfrost/blockfrost-cardano-cli) <img src="https://github.com/blockfrost/blockfrost-cardano-cli/blob/master/docs/badge-coverage.svg" /> <a href="https://fivebinaries.com/"><img src="https://img.shields.io/badge/made%20by-Five%20Binaries-darkviolet.svg?style=flat-square" /></a>
+
+<img src="https://blockfrost.io/images/logo.svg" width="250" align="right" height="90" style="margin-bottom: -50px">
+
 # Blockfrost Cardano CLI
 
-Drop-in(ish) replacement for cardano-cli. Query the blockchain without the need to spin up your own Cardano node. All powered by [Blockfrost API](https://blockfrost.io).
+<br>
+<p align="center">Drop-in(ish) replacement for cardano-cli.<br />Query the blockchain without the need to spin up your own Cardano node. All powered by <a href="https://blockfrost.io">Blockfrost API</a>.</p>
+<p align="center">
+  <a href="#installation">Installation</a> •
+  <a href="#setup">Setup</a> •
+  <a href="#commands">Commands</a> •
+  <a href="#cardano-cli-compatibility">Cardano CLI compatibility</a>
+</p>
+<br/>
 
 ## Installation
 
