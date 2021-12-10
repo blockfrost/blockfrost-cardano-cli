@@ -30,6 +30,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-unicorn": "^39.0.0",
     "jest": "^27.4.3",
+    "make-coverage-badge": "^1.2.0",
     "nock": "^13.2.1",
     "oclif": "2.0.0-main.11",
     "prettier": "^2.5.0",
@@ -81,6 +82,7 @@
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "yarn build && oclif manifest && oclif readme",
     "test": "jest",
+    "test:badges": "make-coverage-badge --output-path ./docs/badge-coverage.svg",
     "lint": "eslint . --ext .ts",
     "type-check": "tsc -p tsconfig.types.json",
     "version": "oclif readme && git add README.md"
