@@ -165,7 +165,7 @@ $ bcc query tip --testnet
 
 #### `bcc query stake-distribution`
 
-List of pools sorted by pool ID (in hex).
+Get aggregated stake distribution sorted by pool ID (in hex).
 
 ```console
 $ bcc query stake-distribution --testnet
