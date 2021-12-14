@@ -9,8 +9,9 @@ rec {
     project.overrideAttrs (oldAttrs: rec {
       name = "blockfrost-cardano-cli";
       version = packageJSON.version;
+      meta.priority = 0;
       buildPhase = ''
-        yarn pack
+        yarn build
         cp -r . $out
         ln -s $out/bin/run $out/bin/${name}
       '';
