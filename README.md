@@ -59,6 +59,62 @@ $ bcc <COMMAND> [--testnet | --testnet-magic 1097911063] [--out-file FILE] [--he
 
 ### Commands
 
+#### `bcc query tip`
+
+Get the current tip
+
+```console
+$ bcc query tip --testnet
+
+{
+    "epoch": 171,
+    "hash": "d91bbfb72158eed4949663abbc20ce70dcc1a5c4d8855b6db46f6cd9c061dce5",
+    "slot": 43922944,
+    "block": 3115492,
+    "era": "Alonzo",
+    "syncProgress": "100.00"
+}
+```
+
+#### `bcc query utxo --address`
+
+Get the current delegations and reward balance filtered by stake address.
+
+```console
+$ bcc query utxo --address addr1q9cn7sh5tgxj5xazsnj7pqfn2nrltnqzh268arnp5a273av8q0pkxxvsh4v5jc4lwz5ccdxh892g73ns65xj5vvqsa3s93g77p
+
+ TxHash                                                           TxIx   Amount                                                                                                       
+ ──────────────────────────────────────────────────────────────── ────── ──────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+ 61d47e568b1502064906e977aae848c7aec9a76f97e7d11ad5d752e95c438011 0      1379280 lovelace + 1 e5a2bcc51466942a9db1da62471a1b682bde3abcebafee2c7fb1e378.415254494643544d4f4f4e32353437 
+ ac1d8802a4e100d90ce59fb4e4573f1c7884a65197ff39810a88eb0b07de3aa6 0      30000000 lovelace                                                                                            
+ 69818d49963ffafe8a287ec270d05ba89493de33ddf7b5b9bcb07e97802a0f28 1      5573009 lovelace                                                                                             
+ fba1526c49684722199b102bffd5b4a66ea1d490605532753fa24e12af925722 0      5000000 lovelace  
+ ```
+
+#### `bcc query stake-address-info --address`
+
+Get the current delegations and reward balance filtered by stake address.
+
+```console
+$ bcc query stake-address-info --address stake_test1uqvjsz7a3xm7ylpzgdhvg29gd9686ss9kztxeaanwp9nreqq74692 --testnet
+
+[
+    {
+        "address": "stake_test1uqvjsz7a3xm7ylpzgdhvg29gd9686ss9kztxeaanwp9nreqq74692",
+        "rewardAccountBalance": 0,
+        "delegation": null
+    }
+]
+```
+
+#### `bcc transaction submit --tx-file FILE`
+
+```console
+$ bcc transaction submit --tx-file /tmp/mytx --testnet
+
+Transaction successfully submitted.
+```
+
 #### `bcc query pool-params --stake-pool-id POOLID`
 
 List parameters of specified pool
@@ -146,23 +202,6 @@ $ bcc query protocol-parameters --testnet
 }
 ```
 
-#### `bcc query tip`
-
-Get the current tip
-
-```console
-$ bcc query tip --testnet
-
-{
-    "epoch": 171,
-    "hash": "d91bbfb72158eed4949663abbc20ce70dcc1a5c4d8855b6db46f6cd9c061dce5",
-    "slot": 43922944,
-    "block": 3115492,
-    "era": "Alonzo",
-    "syncProgress": "100.00"
-}
-```
-
 #### `bcc query stake-distribution`
 
 Get aggregated stake distribution sorted by pool ID (in hex).
@@ -180,30 +219,6 @@ $ bcc query stake-distribution --testnet
  pool1qrfa3jrqptfj0kg5pef7fup6ta70pdf7e7vjcgpxtrtsvxxf7ze 2.957e-10
  pool1qrazx9r2jtepdefa7h830az933vexudt9rpn0t2vky95k5k97my 1.245e-4
  ...
-```
-
-#### `bcc query stake-address-info --address`
-
-Get the current delegations and reward balance filtered by stake address.
-
-```console
-$ bcc query stake-address-info --address stake_test1uqvjsz7a3xm7ylpzgdhvg29gd9686ss9kztxeaanwp9nreqq74692 --testnet
-
-[
-    {
-        "address": "stake_test1uqvjsz7a3xm7ylpzgdhvg29gd9686ss9kztxeaanwp9nreqq74692",
-        "rewardAccountBalance": 0,
-        "delegation": null
-    }
-]
-```
-
-#### `bcc transaction submit --tx-file FILE`
-
-```console
-$ bcc transaction submit --tx-file /tmp/mytx --testnet
-
-Transaction successfully submitted.
 ```
 
 ## Cardano CLI compatibility
