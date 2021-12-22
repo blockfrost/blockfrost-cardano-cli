@@ -78,7 +78,7 @@ $ bcc query tip --testnet
 
 #### `bcc query utxo --address`
 
-Get the current delegations and reward balance filtered by stake address.
+Get the current UTXO set filtered by an address.
 
 ```console
 $ bcc query utxo --address addr1q9cn7sh5tgxj5xazsnj7pqfn2nrltnqzh268arnp5a273av8q0pkxxvsh4v5jc4lwz5ccdxh892g73ns65xj5vvqsa3s93g77p
