@@ -438,7 +438,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@blockfrost/blockfrost-cardano-cli@workspace:."
   dependencies:
-    "@blockfrost/blockfrost-js": 3.0.3-beta.3
+    "@blockfrost/blockfrost-js": 4.0.0
     "@oclif/core": 1.0.10
     "@oclif/plugin-help": ^5
     "@types/jest": ^27.0.3
@@ -471,15 +471,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blockfrost/blockfrost-js@npm:3.0.3-beta.3":
-  version: 3.0.3-beta.3
-  resolution: "@blockfrost/blockfrost-js@npm:3.0.3-beta.3"
+"@blockfrost/blockfrost-js@npm:4.0.0":
+  version: 4.0.0
+  resolution: "@blockfrost/blockfrost-js@npm:4.0.0"
   dependencies:
     "@emurgo/cardano-serialization-lib-nodejs": ^9.1.2
     "@emurgo/cip14-js": 3.0.1
     form-data: ^4.0.0
     got: ^11.8.3
-  checksum: 2a61fab7a986ec5de0507dfd1b2829cb715be60f77231a5388e8b29720f42f8d7d24cca2fefc9a31fe9097f20c3cf62d934aef37745dfc1ad8da6730ab16247b
+  checksum: 6fb1ef63eb42213c2e92ac445ce716427f47edbbdd8bc495e23b5da47f2b1fe9aafdeed9205966c53f1482b898c3ccf4dd033e738a02ba3fa05c4d3a229485c2
   languageName: node
   linkType: hard
 
