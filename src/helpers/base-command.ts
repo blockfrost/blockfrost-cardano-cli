@@ -19,6 +19,11 @@ export abstract class BaseCommand extends Command {
   static flags = {
     // common flags
     help: Flags.help({ char: 'h' }),
+    mainnet: Flags.boolean({
+      description: 'Cardano Mainnet (default)',
+      hidden: true,
+      exclusive: ['testnet', 'testnet-magic'],
+    }),
     testnet: Flags.boolean({ char: 't', description: 'Cardano Testnet' }),
     'testnet-magic': Flags.integer({
       hidden: true,

@@ -83,13 +83,13 @@ Get the current UTXO set filtered by an address.
 ```console
 $ bcc query utxo --address addr1q9cn7sh5tgxj5xazsnj7pqfn2nrltnqzh268arnp5a273av8q0pkxxvsh4v5jc4lwz5ccdxh892g73ns65xj5vvqsa3s93g77p
 
- TxHash                                                           TxIx   Amount                                                                                                       
- ──────────────────────────────────────────────────────────────── ────── ──────────────────────────────────────────────────────────────────────────────────────────────────────────── 
- 61d47e568b1502064906e977aae848c7aec9a76f97e7d11ad5d752e95c438011 0      1379280 lovelace + 1 e5a2bcc51466942a9db1da62471a1b682bde3abcebafee2c7fb1e378.415254494643544d4f4f4e32353437 
- ac1d8802a4e100d90ce59fb4e4573f1c7884a65197ff39810a88eb0b07de3aa6 0      30000000 lovelace                                                                                            
- 69818d49963ffafe8a287ec270d05ba89493de33ddf7b5b9bcb07e97802a0f28 1      5573009 lovelace                                                                                             
- fba1526c49684722199b102bffd5b4a66ea1d490605532753fa24e12af925722 0      5000000 lovelace  
- ```
+ TxHash                                                           TxIx   Amount
+ ──────────────────────────────────────────────────────────────── ────── ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ 61d47e568b1502064906e977aae848c7aec9a76f97e7d11ad5d752e95c438011 0      1379280 lovelace + 1 e5a2bcc51466942a9db1da62471a1b682bde3abcebafee2c7fb1e378.415254494643544d4f4f4e32353437
+ ac1d8802a4e100d90ce59fb4e4573f1c7884a65197ff39810a88eb0b07de3aa6 0      30000000 lovelace
+ 69818d49963ffafe8a287ec270d05ba89493de33ddf7b5b9bcb07e97802a0f28 1      5573009 lovelace
+ fba1526c49684722199b102bffd5b4a66ea1d490605532753fa24e12af925722 0      5000000 lovelace
+```
 
 #### `bcc query stake-address-info --address`
 
@@ -235,4 +235,4 @@ Output of following commands should be compatible with `cardano-cli` (1.31.0) fo
 - `bcc transaction`
   - `submit --tx-file`
 
-Additionally, all commands support `--out-file FILE`, `--testnet` or `--testnet-magic 1097911063`.
+Additionally, all commands support `--out-file FILE`, `--mainnet`, `--testnet` or `--testnet-magic 1097911063`.
