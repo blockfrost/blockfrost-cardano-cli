@@ -2,7 +2,6 @@ import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
 import { ERROR } from '../../constants/errors';
 import { format } from 'util';
 import { ENV_VAR_PROJECT_ID } from '../../constants';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const packageJson = require('../../../package.json');
 
 export const createBlockfrostClient = (testnet?: boolean) => {
