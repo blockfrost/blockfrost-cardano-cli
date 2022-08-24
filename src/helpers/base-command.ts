@@ -88,7 +88,11 @@ export abstract class BaseCommand extends Command {
     writeToFile(flags['out-file'], stringify(data));
   }
 
-  async catch(err: Record<string, any>) {
+  async catch(
+    err: Error & {
+      exitCode?: number | undefined;
+    },
+  ) {
     if (err instanceof BlockfrostServerError && err.message.includes('Network token mismatch')) {
       const { flags } = await this.parseBaseCommand();
       const envVarName = flags.testnet ? ENV_VAR_PROJECT_ID.TESTNET : ENV_VAR_PROJECT_ID.MAINNET;

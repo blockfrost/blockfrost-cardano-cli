@@ -10,5 +10,6 @@ module.exports = {
     'unicorn/numeric-separators-style': 'off',
     'unicorn/no-array-for-each': 'off',
     'unicorn/prefer-module': 'off',
+    'unicorn/text-encoding-identifier-case': 'off',
   },
 };

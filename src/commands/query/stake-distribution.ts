@@ -45,8 +45,8 @@ import { BaseCommand } from '../../helpers/base-command';
 
 type Data = {
   pool_id: string;
-  numerator: BigInt;
-  denominator: BigInt;
+  numerator: bigint;
+  denominator: bigint;
 };
 export class StakeDistribution extends BaseCommand {
   prettyPrint = (res: Data[]) => {
@@ -78,8 +78,8 @@ export class StakeDistribution extends BaseCommand {
     const stakePerPool: Record<
       string,
       {
-        numerator: BigInt;
-        denominator: BigInt;
+        numerator: bigint;
+        denominator: bigint;
       }
     > = {};
     data.forEach(stake => {
