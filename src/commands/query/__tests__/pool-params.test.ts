@@ -3,16 +3,17 @@ import { stdout } from 'stdout-stderr';
 import * as nock from 'nock';
 import { PoolParams } from '../pool-params';
 import * as blockfrostService from '../../../services/blockfrost';
+import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types';
 
 describe('query pool-params', () => {
   beforeEach(() => {
     jest
       .spyOn(blockfrostService, 'createBlockfrostClient')
-      .mockImplementation((testnet?: boolean) => {
+      .mockImplementation((network?: CardanoNetwork) => {
         // omit check for missing env variable for project id
         return new BlockFrostAPI({
           projectId: 'testnet123',
-          isTestnet: Boolean(testnet),
+          network,
         });
       });
   });

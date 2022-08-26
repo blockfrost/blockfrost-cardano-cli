@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
+import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types';
 import * as fs from 'fs';
 import { stdout } from 'stdout-stderr';
 import * as blockfrostService from '../../../services/blockfrost';
@@ -12,11 +13,11 @@ describe('query stake-distribution', () => {
   beforeEach(() => {
     jest
       .spyOn(blockfrostService, 'createBlockfrostClient')
-      .mockImplementation((testnet?: boolean) => {
+      .mockImplementation((network?: CardanoNetwork) => {
         // omit check for missing env variable for project id
         return new BlockFrostAPI({
           projectId: 'testnet123',
-          isTestnet: Boolean(testnet),
+          network,
         });
       });
   });
