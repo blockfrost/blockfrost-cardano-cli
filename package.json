@@ -1,7 +1,7 @@
 {
   "name": "@blockfrost/blockfrost-cardano-cli",
   "description": "Drop-in(ish) replacement for cardano-cli powered by Blockfrost",
-  "version": "0.0.2",
+  "version": "1.0.0-beta.2",
   "author": "blockfrost.io",
   "bin": {
     "bcc": "./bin/run",
@@ -79,6 +79,7 @@
   "repository": "blockfrost/blockfrost-cardano-cli",
   "scripts": {
     "build": "rm -rf lib && tsc -b",
+    "dev": "./bin/dev",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "yarn build && oclif manifest && oclif readme",
