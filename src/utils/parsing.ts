@@ -55,3 +55,11 @@ export const assetsToPolicies = (assets: { quantity: string; unit: string }[]) =
 
   return policies;
 };
+
+export const parseCardanoCliVersion = (versionOutput: string) => {
+  const versionRe = new RegExp(/cardano-cli (\d+)\.(\d+)\.(\d+)/);
+  const version = (versionOutput.match(versionRe) ?? [])
+    .slice(1)
+    .map((t: string) => Number.parseInt(t, 10));
+  return version;
+};
