@@ -240,3 +240,17 @@ Output of following commands should be compatible with `cardano-cli` (1.31.0) fo
   - `submit --tx-file`
 
 Additionally, all commands support `--out-file FILE`, `--mainnet`, `--testnet` or `--testnet-magic <1097911063 | 1 | 2>`.
+
+## Development
+
+`bcc` command won't work correctly while running from within repository. During development use the following
+
+```console
+$ ./bin/dev
+```
+
+or
+
+```console
+$ yarn dev
+```
