@@ -6,10 +6,12 @@ import { createBlockfrostClient } from '../services/blockfrost';
 import { writeToFile } from '../utils/file';
 import { stringify } from '../utils/format';
 import { CommandDataType } from '../utils/types';
-import { ENV_VAR_PROJECT_ID, TESTNET_MAGIC } from '../constants';
+import { ENV_VAR_PROJECT_ID, NETWORK_MAGIC } from '../constants';
+import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types';
 
 export abstract class BaseCommand extends Command {
   private client: BlockFrostAPI | null;
+  private blockfrostNetwork: CardanoNetwork | undefined;
   // Method that returns data to be printed to stdout. Will be called from 'run' method.
   abstract doWork(): Promise<any>;
   // Each command extends this class and can define additional flags
@@ -24,9 +26,9 @@ export abstract class BaseCommand extends Command {
       hidden: true,
       exclusive: ['testnet', 'testnet-magic'],
     }),
-    testnet: Flags.boolean({ char: 't', description: 'Cardano Testnet' }),
+    testnet: Flags.boolean({ char: 't', hidden: true, description: 'Cardano Testnet' }),
     'testnet-magic': Flags.integer({
-      hidden: true,
+      hidden: false,
       exclusive: ['testnet'],
     }), // --testnet magic 1097911063 should be a same as using --testnet
     json: Flags.boolean({ description: 'Always outputs json instead of pretty printed table' }),
@@ -43,18 +45,23 @@ export abstract class BaseCommand extends Command {
 
   private async handleTestnetMagic() {
     const { flags } = await this.parse(BaseCommand);
-    // set flags.testnet based on testnet-magic flag if necessary
+    // set blockfrostNetwork based on testnet-magic flag if necessary
     const testnetMagic = flags['testnet-magic'];
-    if (testnetMagic) {
-      if (testnetMagic === TESTNET_MAGIC) {
-        if (!flags.testnet) {
-          // insert testnet flag and remove --testnet-magic TESTNET_MAGIC
-          this.argv.push('--testnet');
-          const magicIndex = this.argv.indexOf('--testnet-magic');
-          this.argv.splice(magicIndex, 2);
-          // flags.testnet = true; // probably useless
+    if (flags.testnet && !testnetMagic) {
+      // legacy --testnet used, update --testnet-magic
+      this.blockfrostNetwork = 'testnet';
+      const testnetFlagIndex = this.argv.indexOf('--testnet');
+      this.argv.splice(testnetFlagIndex, 1);
+      this.argv.push(`--testnet-magic`, `${NETWORK_MAGIC.testnet}`);
+    } else if (testnetMagic) {
+      for (const [network, magic] of Object.entries(NETWORK_MAGIC)) {
+        if (magic === testnetMagic) {
+          // @ts-expect-error NETWORK_MAGIC is indexed by  literals
+          this.blockfrostNetwork = network;
         }
-      } else {
+      }
+
+      if (!this.blockfrostNetwork) {
         throw new Error(ERROR.FLAG_UNSUPPORTED_TESTNET_MAGIC);
       }
     }
@@ -67,8 +74,8 @@ export abstract class BaseCommand extends Command {
 
   async getClient() {
     if (!this.client) {
-      const { flags } = await this.parseBaseCommand();
-      this.client = createBlockfrostClient(flags.testnet);
+      // const { flags } = await this.parseBaseCommand();
+      this.client = createBlockfrostClient(this.blockfrostNetwork);
     }
 
     return this.client;
@@ -95,7 +102,7 @@ export abstract class BaseCommand extends Command {
   ) {
     if (err instanceof BlockfrostServerError && err.message.includes('Network token mismatch')) {
       const { flags } = await this.parseBaseCommand();
-      const envVarName = flags.testnet ? ENV_VAR_PROJECT_ID.TESTNET : ENV_VAR_PROJECT_ID.MAINNET;
+      const envVarName = flags.testnet ? ENV_VAR_PROJECT_ID.testnet : ENV_VAR_PROJECT_ID.mainnet;
       this.error(
         format(
           'Network token mismatch.\nUse --tesnet for testnet network or check if environment variable %s is set correctly.',

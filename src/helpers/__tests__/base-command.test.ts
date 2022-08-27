@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as blockfrostService from '../../services/blockfrost';
 
 import { stringify } from '../../utils/format';
-import { TESTNET_MAGIC } from '../../constants';
+import { NETWORK_MAGIC } from '../../constants';
 import { ERROR } from '../../constants/errors';
 
 export class TestCommand extends BaseCommand {
@@ -83,11 +83,11 @@ describe('BaseCommand', () => {
 
   it('should set --testnet to true if --testnet-magic TESTNET_MAGIC is set', async () => {
     stdout.start();
-    await TestCommand.run(['--json', '--testnet-magic', `${TESTNET_MAGIC}`]);
+    await TestCommand.run(['--json', '--testnet']);
     stdout.stop();
     const output = stdout.output;
 
-    expect(JSON.parse(output).flags.testnet).toBe(true);
+    expect(JSON.parse(output).flags['testnet-magic']).toBe(NETWORK_MAGIC.testnet);
   });
 
   it('should throw on unsupported testnet magic in --testnet-magic', async () => {

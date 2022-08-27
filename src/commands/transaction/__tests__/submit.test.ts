@@ -6,6 +6,7 @@ import * as nock from 'nock';
 import { stdout } from 'stdout-stderr';
 import * as blockfrostService from '../../../services/blockfrost';
 import { Submit } from '../submit';
+import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types';
 
 describe('transaction submit', () => {
   it('should read tx from file and submit it via client.txSubmit', async () => {
@@ -21,7 +22,7 @@ describe('transaction submit', () => {
       jest
         .spyOn(blockfrostService, 'createBlockfrostClient')
         // @ts-ignore partial mock
-        .mockImplementation((_testnet?: boolean) => {
+        .mockImplementation((_network?: string) => {
           return {
             txSubmit: mockedTxSubmit,
           };
@@ -50,11 +51,11 @@ describe('transaction submit', () => {
 
     jest
       .spyOn(blockfrostService, 'createBlockfrostClient')
-      .mockImplementation((testnet?: boolean) => {
+      .mockImplementation((network?: CardanoNetwork) => {
         // omit check for missing env variable for project id
         return new BlockFrostAPI({
           projectId: 'testnet123',
-          isTestnet: Boolean(testnet),
+          network,
         });
       });
 

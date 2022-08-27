@@ -243,7 +243,8 @@ export class ProtocolParameters extends BaseCommand {
         memory: stringToBigInt(epochParams.max_tx_ex_mem),
         steps: stringToBigInt(epochParams.max_tx_ex_steps),
       },
-      costModels: {},
+      // @ts-expect-error cost_models are missing in Blockfrost OpenAPI (mainnet did not hard fork yet)
+      costModels: epochParams.cost_models ?? {},
       protocolVersion: {
         minor: epochParams.protocol_minor_ver,
         major: epochParams.protocol_major_ver,

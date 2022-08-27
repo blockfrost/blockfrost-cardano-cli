@@ -2,10 +2,11 @@ import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
 import { ERROR } from '../../constants/errors';
 import { format } from 'util';
 import { ENV_VAR_PROJECT_ID } from '../../constants';
+import { CardanoNetwork } from '@blockfrost/blockfrost-js/lib/types';
 const packageJson = require('../../../package.json');
 
-export const createBlockfrostClient = (testnet?: boolean) => {
-  const envVarName = testnet ? ENV_VAR_PROJECT_ID.TESTNET : ENV_VAR_PROJECT_ID.MAINNET;
+export const createBlockfrostClient = (network?: CardanoNetwork) => {
+  const envVarName = network ? ENV_VAR_PROJECT_ID[network] : ENV_VAR_PROJECT_ID.mainnet;
   const projectId = process.env[envVarName];
 
   if (!projectId) {
@@ -16,7 +17,7 @@ export const createBlockfrostClient = (testnet?: boolean) => {
 
   return new BlockFrostAPI({
     projectId,
-    isTestnet: Boolean(testnet),
+    network,
     userAgent,
   });
 };

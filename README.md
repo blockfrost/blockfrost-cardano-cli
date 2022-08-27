@@ -47,14 +47,16 @@ In order to use Blockfrost Cardano CLI you first need generate project token(s) 
 Then set following environment variables:
 
 - `BLOCKFROST_PROJECT_ID_MAINNET` - Mainnet token that will be used if you don't specify `--testnet` flag
-- `BLOCKFROST_PROJECT_ID_TESTNET` - Testnet token that will be used when `--testnet` flag is specified
+- `BLOCKFROST_PROJECT_ID_TESTNET` - Testnet token that will be used when `--testnet` or `--testnet-magic 1097911063` flag is specified (legacy Cardano Testnet network)
+- `BLOCKFROST_PROJECT_ID_PREPROD` - Testnet token that will be used when `--testnet-magic 1` flag is specified (Cardano Preprod network)
+- `BLOCKFROST_PROJECT_ID_PREVIEW` - Testnet token that will be used when `--testnet-magic 2` flag is specified (Cardano Preview network)
 
 We recommend setting both of these variables as it allows you to seamlessly switch between mainnet and testnet network while using the CLI.
 
 ## Usage
 
 ```console
-$ bcc <COMMAND> [--testnet | --testnet-magic 1097911063] [--out-file FILE] [--help]
+$ bcc <COMMAND> [--testnet | --testnet-magic 1 | --testnet-magic 2 | --testnet-magic 1097911063] [--out-file FILE] [--help]
 ```
 
 ### Commands
@@ -237,4 +239,4 @@ Output of following commands should be compatible with `cardano-cli` (1.31.0) fo
 - `bcc transaction`
   - `submit --tx-file`
 
-Additionally, all commands support `--out-file FILE`, `--mainnet`, `--testnet` or `--testnet-magic 1097911063`.
+Additionally, all commands support `--out-file FILE`, `--mainnet`, `--testnet` or `--testnet-magic <1097911063 | 1 | 2>`.
