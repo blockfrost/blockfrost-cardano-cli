@@ -61,3 +61,17 @@ export const assetsToPolicies = [
     },
   },
 ];
+
+export const parseCardanoCliVersion = [
+  {
+    description: 'parseCardanoCliVersion: no output',
+    data: ``,
+    result: [undefined, undefined, undefined],
+  },
+  {
+    description: 'parseCardanoCliVersion: 1.31.0 on darwin',
+    data: `cardano-cli 1.31.0 - darwin-x86_64 - ghc-8.10
+    git rev 5939f8084cfdf5ec017542034d981bb75879fed6`,
+    result: [1, 31, 0],
+  },
+];

@@ -22,4 +22,11 @@ describe('parsing', () => {
       expect(res).toMatchObject(f.result);
     });
   });
+
+  fixtures.parseCardanoCliVersion.forEach(f => {
+    test(f.description, () => {
+      const res = parsing.parseCardanoCliVersion(f.data);
+      expect(res).toMatchObject(f.result);
+    });
+  });
 });

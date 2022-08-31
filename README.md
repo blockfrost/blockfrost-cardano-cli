@@ -61,6 +61,8 @@ $ bcc <COMMAND> [--testnet | --testnet-magic 1 | --testnet-magic 2 | --testnet-m
 
 ### Commands
 
+If you have `cardano-cli` in `PATH` environment variable it will be automatically detected and commands that are not directly supported by blockfrost-cardano-cli will be passed to cardano-cli.
+
 #### `bcc query tip`
 
 Get the current tip
@@ -225,7 +227,9 @@ $ bcc query stake-distribution --testnet
 
 ## Cardano CLI compatibility
 
-We have ported just those calls for which you would need to run your own `cardano-node`. Other calls, which do not require the `cardano-node`, such as key generation and signing etc., have not been ported. For these calls, you still have to use `cardano-cli`.
+We have ported just those calls for which you would need to run your own `cardano-node`. Other calls, which do not require the `cardano-node`, such as key generation and signing etc., have not been ported. For these calls, you still need `cardano-cli` installed.
+
+If you have `cardano-cli` in `PATH` environment variable it will be automatically detected and commands that are not directly supported by blockfrost-cardano-cli will be passed to cardano-cli.
 
 Output of following commands should be compatible with `cardano-cli` (1.31.0) for all practical purposes. It is possible we have missed few things. If you encounter any problem while replacing cardano-cli with blockfrost-cardano-cli please open an issue.
 
