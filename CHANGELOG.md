@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0]
+
 ### Added
 
 - Support for Preview and Preprod Cardano networks via `--testnet-magic` option. Project ID for these networks is picked from environment variables `BLOCKFROST_PROJECT_ID_PREPROD` and `BLOCKFROST_PROJECT_ID_PREVIEW`.
